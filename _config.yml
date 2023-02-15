@@ -2,11 +2,11 @@
 title:               184 Project Webpage
 tagline:             'Just add more squares!'
 description:         'CS 184 projects - Noah Adhikari and Allen Gu'
-url:                 http://lanyon.getpoole.com
-baseurl:             ''
+url:                 https://cal-cs184-student.github.io/webpage-just-add-more-squares
+baseurl:             /
 paginate:            5
 permalink:           pretty
-github_repo:         https://github.com/noahadhikari/just-add-more-squares-webpage
+github_repo:         https://github.com/cal-cs184-student/webpage-just-add-more-squares
 
 # About/contact
 author:
