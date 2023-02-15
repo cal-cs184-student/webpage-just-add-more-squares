@@ -118,7 +118,8 @@ Here is the output of `basic/test4.svg` with sample rates of 1, 4, and 16,
 respectively:
 
 <!-- table -->
-| ![test4-rate-1](../proj1/img/basic-test4-rate-1.png) | ![test4-rate-4](../proj1/img/basic-test4-rate-4.png) | ![test4-rate-16](../proj1/img/basic-test4-rate-16.png) |
+| ![test4-rate-1](../proj1/img/basic-test4-rate-1.png) | ![test4-rate-4](../proj1/img/basic-test4-rate-4.png) | ![test4-rate-16](../proj1/img/basic-test4-rate-16.png)|
+| ----- | ----- | ------ |
 
 We can see lots of aliasing with a sample rate of 1, significantly less with 4,
 and much less with 16. This occurs because this portion of the image is “high
