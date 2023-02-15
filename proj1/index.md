@@ -89,43 +89,45 @@ following task.
 
 # Task 2
 
-To supersample with a given sample_rate, we calculated (sample_rate) equally
-spaced points for a given pixel by calculating a step equal to
-(sample_rate)^-0.5 then offsetting our minimum x- and y-values by one-half times
-the step. From here, we step sqrt(sample_rate) - 1 steps in both the x- and y-
-directions to effectively “grid” the given pixel with (sample_rate) equally
-spaced points.
+To supersample with a given `sample_rate`, we calculated `sample_rate` equally
+spaced points within a given pixel by calculating a `step` equal to
+`sample_rate^-0.5` then offsetting our minimum x- and y-values by one-half times
+the `step`. From here, we take a total of `sqrt(sample_rate) - 1` steps in both
+the x- and y- directions to effectively “grid” the given pixel with
+`sample_rate` equally spaced points.
 
 Each of these points represents one sample. Because we now have many more sample
-points than pixels, we resized the sample_buffer to be sample_rate times its
+points than pixels, we resized the `sample_buffer` to be `sample_rate` times its
 original size and expanded the original flattened pixel cell within the
-sample_buffer to sample_rate different cells.
+`sample_buffer` to `sample_rate` different cells.
 
 Then, we sampled each of these points individually, and, depending on whether
 they were inside or outside the triangle, wrote the given cell to the
-corresponding cell in the now-expanded sample_buffer. Finally, in
-resolve_to_framebuffer, we collapsed the value of these supersampled points by
+corresponding cell in the now-expanded `sample_buffer`. Finally, in
+`resolve_to_framebuffer`, we collapsed the value of these supersampled points by
 taking the supersampled points’ average for a certain pixel and writing that
-value into the frame_buffer.
+value into the framebuffer.
 
 Supersampling can be useful for reducing aliasing, because more samples means
 that our Nyquist frequency is lower, and hence the algorithm develops an
 increased resilience to fast changes in frequency. However, this comes at the
 cost of both computational runtime and memory, because we have to both compute
-and store sample_rate times more points.
+and store `sample_rate` times more points.
 
-Here is the output of `basic/test4.svg` with sample rates of 1, 4, and 16,
-respectively:
+Here is the output of `basic/test4.svg` with increasing sample rates:
 
 <!-- table -->
+
+| Sample rate 1 | Sample rate 4 | Sample rate 16 |
+|:---:|:---:|:---:|
 | ![test4-rate-1](../proj1/img/basic-test4-rate-1.png) | ![test4-rate-4](../proj1/img/basic-test4-rate-4.png) | ![test4-rate-16](../proj1/img/basic-test4-rate-16.png)|
-| ----- | ----- | ------ |
 
 We can see lots of aliasing with a sample rate of 1, significantly less with 4,
 and much less with 16. This occurs because this portion of the image is “high
-frequency” - at the corner of this very skinny triangle, we have a very sharp
-change in color. This means that higher sample rates are able to capture this
-change more accurately, and hence we see less aliasing.
+frequency” - at the corner of this skinny triangle, we have a very sharp change
+in color, which lower sample rates are unable to capture effectively. This means
+that higher sample rates are able to capture this change more accurately, and
+hence we see less aliasing.
 
 # Task 3
 
@@ -135,19 +137,19 @@ This is tree pose guy. He do tree pose. To accomplish this, we had to modify the
 
 # Task 4
 
-**Explain barycentric coordinates in your own words and use an image to aid you in your explanation. One idea is to use a svg file that plots a single triangle with one red, one green, and one blue vertex, which should produce a smoothly blended color triangle.**
+<!-- **Explain barycentric coordinates in your own words and use an image to aid you in your explanation. One idea is to use a svg file that plots a single triangle with one red, one green, and one blue vertex, which should produce a smoothly blended color triangle.** -->
 
 Barycentric coordinates use three coordinates, alpha, beta, and gamma, to describe points relative to a triangle. Points that are near each other will have closer coordinates, which is helpful for an application of barycentric coordinates in the project: linear interpolation. Using the three coordinates and their corresponding vertices of the triangle, points within the triangle can be interpreted as linear combinations of the values at each vertex. For example, we can linearly interpolate colors placed at vertices in our SVG to create triangles that smoothly blend the colors at the three points.
 
 ![barycentric-triangle](../proj1/img/barycentric-triangle.png){:width="50%"}
 
-**Show a png screenshot of svg/basic/test7.svg with default viewing parameters and sample rate 1. If you make any additional images with color gradients, include them.**
+<!-- **Show a png screenshot of svg/basic/test7.svg with default viewing parameters and sample rate 1. If you make any additional images with color gradients, include them.** -->
 
 ![barycentric-circle](../proj1/img/barycentric-circle.png){:width="40%"}
 
 # Task 5
 
-**Explain pixel sampling in your own words and describe how you implemented it to perform texture mapping. Briefly discuss the two different pixel sampling methods, nearest and bilinear.**
+<!-- **Explain pixel sampling in your own words and describe how you implemented it to perform texture mapping. Briefly discuss the two different pixel sampling methods, nearest and bilinear.** -->
 
 Pixel sampling is the method for assigning colors to each pixel of an image. When applied to texture mapping, the goal is to assign colors to pixels so that it matches a texture. Texture mapping involves two different spaces, the first is the pixel coordinate space of the image we’re trying to rasterize and the second is the texture space that we’re trying to display on the image. 
 
@@ -155,13 +157,13 @@ In order to perform texture mapping, we first convert the pixel coordinate (x, y
 
 In nearest-pixel sampling, we take (u, v) and pick the nearest texel’s color and assign it to the coordinate. For bilinear-pixel sampling, we take the 4 texels surrounding the (u, v) coordinate, and compute a linear interpolation over their colors.
 
-**Check out the svg files in the svg/texmap/ directory. Use the pixel inspector to find a good example of where bilinear sampling clearly defeats nearest sampling. Show and compare four png screenshots using nearest sampling at 1 sample per pixel, nearest sampling at 16 samples per pixel, bilinear sampling at 1 sample per pixel, and bilinear sampling at 16 samples per pixel.**
+<!-- **Check out the svg files in the svg/texmap/ directory. Use the pixel inspector to find a good example of where bilinear sampling clearly defeats nearest sampling. Show and compare four png screenshots using nearest sampling at 1 sample per pixel, nearest sampling at 16 samples per pixel, bilinear sampling at 1 sample per pixel, and bilinear sampling at 16 samples per pixel.** -->
 
 *Top left: nearest sampling at 1 sample per pixel, top right: nearest sampling at 16 samples per pixel, bottom left: bilinear sampling at 1 sample per pixel, bottom right: bilinear sampling at 16 samples per pixel.*
 
 ![pixel-sampling-comparison](../proj1/img/pixel-sampling-comparison.png)
 
-**Comment on the relative differences. Discuss when there will be a large difference between the two methods and why.**
+<!-- **Comment on the relative differences. Discuss when there will be a large difference between the two methods and why.** -->
 
 From the images, we see that nearest sampling at 1 sample per pixel has issues rasterizing the continuous, thin lines along the map. Nearest sampling at 16 samples per pixel does better, but the coloring is not smooth with many fluctuations between stronger and more faded colors. Bilinear sampling at 1 sample per pixel has smoother coloring, but once again has trouble showing a continuous line. Bilinear sampling at 16 samples per pixel shows an almost continuous (not perfect, but pretty good) line with smooth coloring.
 
@@ -169,7 +171,7 @@ Overall, there is a large difference between the two methods when the image freq
 
 # Task 6
 
-**Explain level sampling in your own words and describe how you implemented it for texture mapping.**
+<!-- **Explain level sampling in your own words and describe how you implemented it for texture mapping.** -->
 
 Instead of just having a single version/level of a texture, MIP maps hold multiple layers of exponentially decreasing detail. Level sampling is the process for choosing which of these levels to use. To implement texture mapping, we first passed in two additional parameters to our sampling: the (u, v) coordinate corresponding to (x + 1, y) and the (u, v) coordinate corresponding to (x, y + 1). By subtracting the (u, v) coordinate of (x, y) from these two values, we get results representing du/dx, dv/dx and du/dy, dv/dy. We then computed L and D values: L = max(norm(du/dx, dv/dx), norm(du/dy, du/dy)) and D = log_2(L). D is then used to decide which level to sample from - note that D is a continuous value!
 
@@ -189,7 +191,7 @@ Using bilinear level sampling is slower because each sample looks at two levels,
 
 The higher the number of samples per pixel, the slower the technique is. For example, if we have N samples per pixel, we’ll need to compute N times as many samples in total. The memory usage would also be N times as high because we maintain a sample buffer that will contain N times as many entries. However, the antialiasing power is stronger as the number of samples increases because each pixel is the aggregation of many samples.
 
-**Using a png file you find yourself, show us four versions of the image, using the combinations of L_ZERO and P_NEAREST, L_ZERO and P_LINEAR, L_NEAREST and P_NEAREST, as well as L_NEAREST and P_LINEAR.**
+<!-- **Using a png file you find yourself, show us four versions of the image, using the combinations of L_ZERO and P_NEAREST, L_ZERO and P_LINEAR, L_NEAREST and P_NEAREST, as well as L_NEAREST and P_LINEAR.** -->
 
 *Top left: L_ZERO, P_NEAREST, top right: L_ZERO, P_LINEAR, bottom left: L_NEAREST, P_NEAREST, top_right: L_NEAREST, P_LINEAR*
 
