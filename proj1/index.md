@@ -55,7 +55,7 @@ rendering. We can now rasterize, transform, and texture objects - enough for
 many graphics applications!
 
 
-# Task 1
+# Task 1: Naive Sampling
 
 <!-- ### Walk through how you rasterize triangles in your own words. -->
 
@@ -87,7 +87,7 @@ following task.
 ![test4-task1](../proj1/img/basic-test4-rate-1.png)
 
 
-# Task 2
+# Task 2: Supersampling
 
 To supersample with a given `sample_rate`, we calculated `sample_rate` equally
 spaced points within a given pixel by calculating a `step` equal to
@@ -129,7 +129,7 @@ in color, which lower sample rates are unable to capture effectively. This means
 that higher sample rates are able to capture this change more accurately, and
 hence we see less aliasing.
 
-# Task 3
+# Task 3: Transformations
 
 ![tree-pose-guy](../proj1/img/tree-pose-guy.png)
 
@@ -137,7 +137,7 @@ This is tree pose guy. He do tree pose. To accomplish this, we had to modify the
 rotation of both arms and the left leg as well as scale some of the body parts
 up in length.
 
-# Task 4
+# Task 4: Barycentric Coordinates
 
 <!-- **Explain barycentric coordinates in your own words and use an image to aid you in your explanation. One idea is to use a svg file that plots a single triangle with one red, one green, and one blue vertex, which should produce a smoothly blended color triangle.** -->
 
@@ -156,7 +156,7 @@ triangles that smoothly blend the colors at the three points.
 
 ![barycentric-circle](../proj1/img/barycentric-circle.png){:width="40%"}
 
-# Task 5
+# Task 5: Pixel Sampling
 
 <!-- **Explain pixel sampling in your own words and describe how you implemented it to perform texture mapping. Briefly discuss the two different pixel sampling methods, nearest and bilinear.** -->
 
@@ -203,7 +203,7 @@ pixel is not representative of the other nearby pixels, so sampling it can miss
 many of the details contained in those other pixels. On the other hand, bilinear
 sampling smooths out the effects by considering all 4 neighbors.
 
-# Task 6
+# Task 6: Level Sampling
 
 <!-- **Explain level sampling in your own words and describe how you implemented it for texture mapping.** -->
 
