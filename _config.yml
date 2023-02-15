@@ -1,11 +1,12 @@
 # Setup
 title:               184 Project Webpage
 tagline:             'Just add more squares!'
-description:         'A reserved <a href="https://jekyllrb.com" target="_blank">Jekyll</a> theme that places the utmost gravity on content with a hidden drawer. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
+description:         'CS 184 projects - Noah Adhikari and Allen Gu'
 url:                 http://lanyon.getpoole.com
 baseurl:             ''
 paginate:            5
 permalink:           pretty
+github_repo:         https://github.com/noahadhikari/just-add-more-squares-webpage
 
 # About/contact
 author:
