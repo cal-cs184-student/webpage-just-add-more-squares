@@ -6,7 +6,7 @@ nav_order: 1
 mathjax: true
 ---
 
-![Lion](img/lion.png)
+![Lion](../proj1/img/lion.png)
 
 # Overview
 
@@ -84,7 +84,7 @@ because our sample rate isn't high enough to capture the thin corner of the
 triangle. This leads us to the supersampling algorithm described in the
 following task.
 
-![test4-task1](img/basic-test4-rate-1.png)
+![test4-task1](../proj1/img/basic-test4-rate-1.png)
 
 
 # Task 2
@@ -116,9 +116,9 @@ and store sample_rate times more points.
 
 Here is the output of `basic/test4.svg` with sample rates of 1, 4, and 16:
 
-![test4-rate-1](img/basic-test4-rate-1.png)
-![test4-rate-4](img/basic-test4-rate-4.png)
-![test4-rate-16](img/basic-test4-rate-16.png)
+![test4-rate-1](../proj1/img/basic-test4-rate-1.png)
+![test4-rate-4](../proj1/img/basic-test4-rate-4.png)
+![test4-rate-16](../proj1/img/basic-test4-rate-16.png)
 
 We can see lots of aliasing with a sample rate of 1, significantly less with 4,
 and much less with 16. This occurs because this portion of the image is “high
@@ -128,7 +128,7 @@ change more accurately, and hence we see less aliasing.
 
 # Task 3
 
-![tree-pose-guy](img/tree-pose-guy.png)
+![tree-pose-guy](../proj1/img/tree-pose-guy.png)
 
 This is tree pose guy. He do tree pose. To accomplish this, we had to modify the rotation of both arms and the left leg as well as scale some of the body parts up in length.
 
@@ -138,11 +138,11 @@ This is tree pose guy. He do tree pose. To accomplish this, we had to modify the
 
 Barycentric coordinates use three coordinates, alpha, beta, and gamma, to describe points relative to a triangle. Points that are near each other will have closer coordinates, which is helpful for an application of barycentric coordinates in the project: linear interpolation. Using the three coordinates and their corresponding vertices of the triangle, points within the triangle can be interpreted as linear combinations of the values at each vertex. For example, we can linearly interpolate colors placed at vertices in our SVG to create triangles that smoothly blend the colors at the three points.
 
-![barycentric-triangle](img/barycentric-triangle.png){:width="50%"}
+![barycentric-triangle](../proj1/img/barycentric-triangle.png){:width="50%"}
 
 **Show a png screenshot of svg/basic/test7.svg with default viewing parameters and sample rate 1. If you make any additional images with color gradients, include them.**
 
-![barycentric-circle](img/barycentric-circle.png){:width="40%"}
+![barycentric-circle](../proj1/img/barycentric-circle.png){:width="40%"}
 
 # Task 5
 
@@ -158,7 +158,7 @@ In nearest-pixel sampling, we take (u, v) and pick the nearest texel’s color a
 
 *Top left: nearest sampling at 1 sample per pixel, top right: nearest sampling at 16 samples per pixel, bottom left: bilinear sampling at 1 sample per pixel, bottom right: bilinear sampling at 16 samples per pixel.*
 
-![pixel-sampling-comparison](img/pixel-sampling-comparison.png)
+![pixel-sampling-comparison](../proj1/img/pixel-sampling-comparison.png)
 
 **Comment on the relative differences. Discuss when there will be a large difference between the two methods and why.**
 
@@ -192,4 +192,4 @@ The higher the number of samples per pixel, the slower the technique is. For exa
 
 *Top left: L_ZERO, P_NEAREST, top right: L_ZERO, P_LINEAR, bottom left: L_NEAREST, P_NEAREST, top_right: L_NEAREST, P_LINEAR*
 
-![level-pixel-sampling](img/level-pixel-sampling.png)
+![level-pixel-sampling](../proj1/img/level-pixel-sampling.png)
