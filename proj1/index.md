@@ -228,10 +228,7 @@ level sampling, we pick the level that is above $D$ and the level that is below
 $D$ (clamping if too high or too low), and linearly interpolate the sampling
 results from the two levels.
 
-You can now adjust your sampling technique by selecting pixel sampling, level
-sampling, or the number of samples per pixel. Describe the tradeoffs between
-speed, memory usage, and antialiasing power between the three various
-techniques.
+<!-- You can now adjust your sampling technique by selecting pixel sampling, level sampling, or the number of samples per pixel. Describe the tradeoffs between speed, memory usage, and antialiasing power between the three various techniques. -->
 
 *Nearest vs. bilinear pixel sampling*
 
