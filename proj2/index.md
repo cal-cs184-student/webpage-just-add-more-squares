@@ -11,7 +11,26 @@ mathjax: true
 # Overview
 In this project, we explored the ideas behind geometric modeling of curves and surfaces.
 
-We began by looking at Bezier curves and interpolating points along them with the 1D de Casteljau's algorithm. With this algorithm, we are able to quickly evaluate points along a continuous curve 
+We began by looking at Bezier curves and interpolating points along them with the 1D de Casteljau's algorithm. Starting with the control points, we recursively (or iteratively) reduce the number of points at each step. Altogether, we end up with a quick algorithm to evaluate points along the continuous curve.
+
+Afterwards, we extended the algorithm to work on Bezier surfaces. Although seemingly difficult at first, we were able to simplify the task a lot by applying the 1D algorithm along one axis then to the other to get a point along our curved surface. 
+
+While Bezier surfaces result in a smooth contour, they are difficult to render directly. So, we moved onto triangle meshes where surfaces are made of many triangles joined at their edges. One general problem we looked at with rendering surfaces was shading, specifically implementing area-weighted vertex normals to support Phong shading. It took awhile, but we were able to leverage vector cross products to compute normals related to faces and take the weighted average over them.
+
+We then moved onto edge operations to alter the mesh structure. In order to implement these operations, we had to first understand the half-edge datastructure and the distinctions between half-edges, edges, vertices, and faces, as well as the relationships between different half-edges. Once we were familiar with half-edges, we started by implementing an edge flip. This operation involved making many updates to the different attributes of each triangle and how they interacted with each other. We made a couple of mistakes along the way that led to our mesh rendering with holes, but a careful second look through the code helped us catch all the errors.
+
+Another mesh operation we implemented was an edge split. This operation involved even more updates to our half-edge data structure, but it went a lot faster after having the experience from implementing the edge flip. Once again, we made a couple mistakes in how we updated our mesh the first time through, but we reviewed each line of our code carefully to catch those errors. 
+
+Lastly, we put everything together to create an upsampling algorithm with loop subdivision. This algorithm involved using a combination of edge flips and splits and recomputing the positions of each vertex in the mesh to divide our triangle mesh into even smaller triangles. The algorithm had a lot of details that we had to get right during implementation, like distinguishing old and new vertices/edges and making sure our loops weren't iterating over incorrect items, so it took a few attempts to get it correct. Additionally, we initially forgot to reset our indicators for whether vertices were new or old, so multiple upsamplings would fail. After figuring out this issue and resolving it, we had a working algorithm!
+
+We covered a lot of different techniques during this project, and some interesting thoughts and challenges we experienced during the project included:
+
+1. Rather than finding analytical solutions, using recursion or iteration can lead to easier/faster approaches
+2. How to assign vertices, edges, halfedges, and faces after mesh operations to minimize the number of updates
+3. The tradeoffs between computational load and accuracy of the surfaces
+4. Some algorithms like loop subdivision improve certain surface features, while losing others (like sharp corners)
+
+Overall, we learned a lot about what goes into rendering surfaces and some of the methods that are used to do so!
 
 # Part 1: Bezier Curves with 1D de Casteljau Subdivision
 de Casteljau’s algorithm is a recursive algorithm for interpolating points on Bezier curves. For example, if we want to evaluate a Bezier curve at $t$, then at each recursive step, we linearly interpolate between pairs of consecutive control points using $t$. After each step, we end up with one less point. By continuing to recurse until we end up with one point, we find the single interpolated point along the curve!
