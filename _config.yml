@@ -1,7 +1,6 @@
 # Setup
 title:               184 Project Webpage
-tagline:             'Just add more squares!'
-description:         'CS 184 Projects - Noah Adhikari and Allen Gu'
+description:         'CS 184 projects - Noah Adhikari and Allen Gu'
 url:                 https://cal-cs184-student.github.io
 baseurl:             /webpage-just-add-more-squares
 paginate:            5
