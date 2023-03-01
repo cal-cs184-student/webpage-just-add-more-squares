@@ -124,11 +124,51 @@ After we squashed this bug, we were able to split edges without issues.
 
 <!-- Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used. -->
 
-We ran into issues with discerning the  began by implementing the pseudocode from the spec. 
+We ran into issues with discerning the new vertices and edges from the old ones, so we begin the algorithm
+by inserting all of them into a vector to easily keep track of them. Then we implemented the pseudocode given in the spec and skeleton.
+
+1. For each vertex and edge in the mesh, set their `isNew` property to `false`.
+2. Compute new positions for all the vertices in the input mesh, using the Loop subdivision rule, and store them in `Vertex::newPosition`.
+
+    We did this by looping from `mesh.verticesBegin()` to `mesh.verticesEnd()`. We did a triangle traversal on each vertex, computing
+    the sum of the neighbor positions.
+
+    ![loop-subdivision-1](./img/how-to-update-vertices.jpg)
+
+    ```cpp
+    v->newPosition = (1 - n * u) * v->position + 
+                     u * neighbor_position_sum;
+    ```
+
+{:start='3'}
+3. Compute the updated vertex positions associated with edges, and store it in `Edge::newPosition`.
+   Looping from `mesh.edgesBegin()` to `mesh.edgesEnd()`, we computed the new position for each edge using the formula given in the spec.
+
+    ```cpp
+    e->newPosition = 3.0 / 8 * (A + B) + 1. / 8 * (C + D);
+    ```
+
+4. We then consider the original edges only by adding them all to a vector, then splitting each edge in that vector.
+   In this manner we ensure that we do not loop through the newly created edges. We also needed to modify our
+   `edgeSplit` so that the newly created edge's `isNew` is `true`.
+
+5. Then, we flip any new edge connecting a new and old vertex. We do this by taking the exclusive disjunction of the edge's
+   endpoints' `isNew` properties, and flipping if the original edge was also new.
+
+6. Finally, we loop through all the vertices in the mesh and reassign its position to `newPosition` as calculated in step 2.
 
 <!-- Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges? -->
 <!-- Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects. -->
 <!-- If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots. -->
+
+With loop subdivision, we noticed that the sharp corners and edges become rounded out. This occurs because we are creating more
+vertices in the middle of the edges, effectively achieving something emulating blur from images. By pre-splitting edges, we can
+reduce the averaging effect. However, it is not possible to completely eliminate the effect.
+
+We hypothesize that the cube becomes slightly asymmetric after repeated subdivisions because the corners are not all the same
+for each face. The ones that are the vertex of two triangles of a face become subdivided differently than the ones that are the vertex
+of only one triangle of that face. To solve this, our pre-processing step involves splitting the diagonal edges of the cube on
+each face so that the vertices of the cube all become identical. This process can be seen below.
 
 |:---:|:---:|
 | ![cube-preprocessed-1](./img/cube-preprocessed-1.png) | ![cube-preprocessed-2](./img/cube-preprocessed-2.png) |
