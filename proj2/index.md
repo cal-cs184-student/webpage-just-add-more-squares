@@ -70,7 +70,7 @@ This detail still allowed us to flip edges correctly.
 
 <!-- Write about your eventful debugging journey, if you have experienced one. -->
 
-Our code did not work on first try. We had some holes in our teapot. We tried to use the halfedge pointers and debugging tools
+Our code did not work on the first try - we had some holes in our teapot. We tried to use the halfedge pointers and debugging tools
 on the GUI and the IntelliJ debugger but this did not end up so useful. In the end, we double-checked our pointer assignments
 and found that we had totally forgotten to update the edges and vertices (only doing halfedges)! After we implemented that,
 our code worked.
