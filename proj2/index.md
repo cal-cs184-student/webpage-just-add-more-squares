@@ -79,7 +79,13 @@ our code worked.
 
 <!-- Briefly explain how you implemented the edge split operation and describe any interesting implementation / debugging tricks you have used. -->
 
+Similarly to edge flip, we drew out the before- and after-split diagrams for a given edge. Our diagram is below.
 
+<!-- table -->
+
+| Before | After |
+|:---:|:---:|
+| ![edge-flip-before](./img/edge-flip-before.png) | ![edge-split-after](./img/edge-split-after.png) |
 
 <!-- Show screenshots of a mesh before and after some edge splits. -->
 <!-- Show screenshots of a mesh before and after a combination of both edge splits and edge flips. -->
