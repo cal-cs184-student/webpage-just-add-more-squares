@@ -64,18 +64,21 @@ The primer's diagram for edge flip is shown below. Using this diagram, we update
 
 <!-- table -->
 
+| Before | After |
 |:---:|:---:|
 | ![edge-flip-before](./img/edge-flip-before.png) | ![edge-flip-after](./img/edge-flip-after.png) |
 
 
 Here's a couple screenshots of our mesh before and after edge flips.
+
+| Before flip | After flip |
 |:---:|:---:|
 | ![teapot-mesh-before-flip](./img/teapot-before-flip.png) | ![teapot-mesh-after-flip](./img/teapot-after-flip.png) |
 
 <!-- Write about your eventful debugging journey, if you have experienced one. -->
 
-Our code did not work on the first try - we had some holes in our teapot. We tried to use the halfedge pointers and debugging tools
-on the GUI and the IntelliJ debugger but this did not end up so useful. In the end, we double-checked our pointer assignments
+Our code did not work on the first try - we had some holes in our teapot after certain sequences of flips. We tried to use the halfedge pointers and debugging tools
+on the GUI and the CLion debugger but this did not end up so useful. In the end, we double-checked our pointer assignments
 and found that we had totally forgotten to update the edges and vertices (only doing halfedges)! After we implemented that,
 our code worked.
 
@@ -92,7 +95,19 @@ Similarly to edge flip, we drew out the before- and after-split diagrams for a g
 | ![edge-flip-before](./img/edge-flip-before.png) | ![edge-split-after](./img/edge-split-after.png) |
 
 <!-- Show screenshots of a mesh before and after some edge splits. -->
+Here's a screenshot of our mesh before and after edge splits.
+
+| Before split | After split |
+|:---:|:---:|
+| ![teapot-mesh-before-split](./img/teapot-before-split.png) | ![teapot-mesh-after-split](./img/teapot-after-split.png) |
+
 <!-- Show screenshots of a mesh before and after a combination of both edge splits and edge flips. -->
+Here's a screenshot of our mesh before and after edge flips and splits.
+
+| Before flip + split | After flip + split |
+|:---:|:---:|
+| ![teapot-mesh-before-flip-split](./img/teapot-before-split.png) | ![teapot-mesh-after-flip-split](./img/teapot-after-flip-split.png) |
+
 <!-- Write about your eventful debugging journey, if you have experienced one. -->
 <!-- If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges. -->
 
@@ -102,3 +117,9 @@ Similarly to edge flip, we drew out the before- and after-split diagrams for a g
 <!-- Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges? -->
 <!-- Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects. -->
 <!-- If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots. -->
+
+|:---:|:---:|
+| ![cube-preprocessed-1](./img/cube-preprocessed-1.png) | ![cube-preprocessed-2](./img/cube-preprocessed-2.png) |
+| ![cube-preprocessed-3](./img/cube-preprocessed-3.png) | ![cube-preprocessed-4](./img/cube-preprocessed-4.png) |
+
+![cube-preprocessed](./img/cube-preprocessed.gif){:style="display:block; margin-left: auto; margin-right: auto; width:50%;"}
