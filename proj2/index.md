@@ -10,7 +10,7 @@ mathjax: true
 
 # Overview
 
-# Part 1
+# Part 1: Bezier Curves with 1D de Casteljau Subdivision
 de Casteljau’s algorithm is a recursive algorithm for interpolating points on Bezier curves. For example, if we want to evaluate a Bezier curve at $t$, then at each recursive step, we linearly interpolate between pairs of consecutive control points using $t$. After each step, we end up with one less point. By continuing to recurse until we end up with one point, we find the single interpolated point along the curve!
 
 Here's what the algorithm looks like with 6 original control points.
@@ -31,7 +31,7 @@ Here's what the algorithm looks like with 6 original control points.
 We can also move the control points around and modify the parameter *t*.
 ![bezier-animation](./img/bezier-animation.gif){:style="display:block; margin-left: auto; margin-right: auto; width:70%;"}
 
-# Part 2: N-Dimensional Separable Bezier Curves
+# Part 2: Bezier Surfaces with Separable 1D de Casteljau
 
 <!-- Briefly explain how de Casteljau algorithm extends to Bezier surfaces and how you implemented it in order to evaluate Bezier surfaces. -->
 <!-- Show a screenshot of bez/teapot.bez (not .dae) evaluated by your implementation. -->
@@ -44,29 +44,33 @@ Here's our teapot generated with Bezier surfaces:
 
 ![teapot-bez](./img/teapot-bez.png){:style="display:block; margin-left: auto; margin-right: auto; width:70%;"}
 
-
-# Part 3
-
 # Part 3: Area-Weighted Vertex Normals
+To implement area-weighted vertex normals, we first computed the area. For each adjacent face, we would get the position vectors of the three vertices $v1$, $v2$, and $v3$. Then, we took the cross-product of $v2 - v1$ and $v3 - v1$ to get a vector in the normal direction with norm equal to two times the area of the face. We summed together these normal vectors over all of the faces, and then normalized it by calling `Vector3D::normal()`.
 
-<!-- Briefly explain how you implemented the area-weighted vertex normals. -->
-<!-- Show screenshots of dae/teapot.dae (not .bez) comparing teapot shading with and without vertex normals. Use Q to toggle default flat shading and Phong shading. -->
+Here is the teapot with flat shading and Phong shading.
+
+<!-- table -->
+
+| Flat shading | Phong shading |
+|:---:|:---:|
+| ![flat-shading](./img/flat-shading.png) | ![phong-shading](./img/phong-shading.png) |
 
 # Part 4: Edge Flip
 
 <!-- Briefly explain how you implemented the edge flip operation and describe any interesting implementation / debugging tricks you have used.
 Show screenshots of a mesh before and after some edge flips. -->
 We used the primer's guidance on edge flip and drew out the before- and after-flip diagrams for a given edge.
-The primer's diagram for edge flip is shown below.
+The primer's diagram for edge flip is shown below. Using this diagram, we updated every halfedge, vertex, edge, and face by following the diagram.
 
 <!-- table -->
 
 |:---:|:---:|
 | ![edge-flip-before](./img/edge-flip-before.png) | ![edge-flip-after](./img/edge-flip-after.png) |
 
-However, we noticed that there was some strange naming of edges in the primer's diagram. In particular, there was a strange
-rotation of h1, h2, h4, and h5. We elected to ignore this rotation for consistency between the before- and after-flip diagrams.
-This detail still allowed us to flip edges correctly.
+
+Here's a couple screenshots of our mesh before and after edge flips.
+|:---:|:---:|
+| ![teapot-mesh-before-flip](./img/teapot-before-flip.png) | ![teapot-mesh-after-flip](./img/teapot-after-flip.png) |
 
 <!-- Write about your eventful debugging journey, if you have experienced one. -->
 
