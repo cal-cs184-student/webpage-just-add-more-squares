@@ -51,6 +51,13 @@ Here's what the algorithm looks like with 6 original control points.
 | ![step-4](./img/de-casteljau-4.png) | ![interpolated](./img/interpolated-point.png)|
 
 We can also move the control points around and modify the parameter *t*.
+
+|:---:|:---:|
+| ![bezier-0](./img/bezier-0.png) | ![bezier-1](./img/bezier-1.png)|
+| ![bezier-2](./img/bezier-2.png) | ![bezier-3](./img/bezier-3.png)|
+
+Here's an animated version showing this!
+
 ![bezier-animation](./img/bezier-animation.gif){:style="display:block; margin-left: auto; margin-right: auto; width:70%;"}
 
 # Part 2: Bezier Surfaces with Separable 1D de Casteljau
@@ -134,7 +141,7 @@ Here's a screenshot of our mesh before and after edge flips and splits.
 
 On first try, our code crashed the GUI. We tried to debug this by using the CLion debugger and seeing what was throwing the exception.
 Unbeknownst to us, the GUI was not crashing due to an exception, but rather an infinite loop. After re-inspecting our pointer
-manipulation, we discovered that we had erroneously updated some of the `next` pointers, resulting in three of them forming a cycle.
+manipulation, we discovered that we had erroneously updated some of the `next` pointers, resulting in three of them not forming a cycle so our while loop wouldn't end.
 After we squashed this bug, we were able to split edges without issues.
 
 <!-- If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges. -->
@@ -149,8 +156,7 @@ by inserting all of them into a vector to easily keep track of them. Then we imp
 1. For each vertex and edge in the mesh, set their `isNew` property to `false`.
 2. Compute new positions for all the vertices in the input mesh, using the Loop subdivision rule, and store them in `Vertex::newPosition`.
 
-    We did this by looping from `mesh.verticesBegin()` to `mesh.verticesEnd()`. We did a triangle traversal on each vertex, computing
-    the sum of the neighbor positions.
+    We did this by looping from `mesh.verticesBegin()` to `mesh.verticesEnd()`. We did a traversal on each vertex to get each neighbor, computing the sum of the neighbor positions.
 
     ![loop-subdivision-1](./img/how-to-update-vertices.jpg)
 
@@ -181,16 +187,22 @@ by inserting all of them into a vector to easily keep track of them. Then we imp
 <!-- If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots. -->
 
 With loop subdivision, we noticed that the sharp corners and edges become rounded out. This occurs because we are creating more
-vertices in the middle of the edges, effectively achieving something emulating blur from images. By pre-splitting edges, we can
-reduce the averaging effect. However, it is not possible to completely eliminate the effect.
+vertices in the middle of the edges and also updating positions of vertices to act like averages of the surrounding vertices. This update effectively achieving something emulating blur from images where sharp changes become more muted. By pre-splitting edges, we can reduce the averaging effect. However, it is not possible to completely eliminate the effect.
+
+An example of this rounding out can be seen when rendering the cow. Especially around the cow's face and horns, sharp edges become smoother after a single loop subdivision.
+
+|:---:|:---:|
+| ![cow-0](./img/cow-level-0.png) | ![cow-1](./img/cow-level-1.png) |
 
 We hypothesize that the cube becomes slightly asymmetric after repeated subdivisions because the corners are not all the same
-for each face. The ones that are the vertex of two triangles of a face become subdivided differently than the ones that are the vertex
+for each face (due to the asymmetrical edge orientations over the faces of the cube). The ones that are the vertex of two triangles of a face become subdivided differently than the ones that are the vertex
 of only one triangle of that face. To solve this, our pre-processing step involves splitting the diagonal edges of the cube on
 each face so that the vertices of the cube all become identical. This process can be seen below.
 
 |:---:|:---:|
 | ![cube-preprocessed-1](./img/cube-preprocessed-1.png) | ![cube-preprocessed-2](./img/cube-preprocessed-2.png) |
 | ![cube-preprocessed-3](./img/cube-preprocessed-3.png) | ![cube-preprocessed-4](./img/cube-preprocessed-4.png) |
+
+Here's an animated version, too.
 
 ![cube-preprocessed](./img/cube-preprocessed.gif){:style="display:block; margin-left: auto; margin-right: auto; width:50%;"}
