@@ -9,6 +9,9 @@ mathjax: true
 ![Teapot](img/teapot.jpeg)
 
 # Overview
+In this project, we explored the ideas behind geometric modeling of curves and surfaces.
+
+We began by looking at Bezier curves and interpolating points along them with the 1D de Casteljau's algorithm. With this algorithm, we are able to quickly evaluate points along a continuous curve 
 
 # Part 1: Bezier Curves with 1D de Casteljau Subdivision
 de Casteljau’s algorithm is a recursive algorithm for interpolating points on Bezier curves. For example, if we want to evaluate a Bezier curve at $t$, then at each recursive step, we linearly interpolate between pairs of consecutive control points using $t$. After each step, we end up with one less point. By continuing to recurse until we end up with one point, we find the single interpolated point along the curve!
