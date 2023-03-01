@@ -80,7 +80,7 @@ Here's a couple screenshots of our mesh before and after edge flips.
 
 <!-- Write about your eventful debugging journey, if you have experienced one. -->
 
-Our code did not work on the first try - we had some holes in our teapot after certain sequences of flips. We tried to use the halfedge pointers and debugging tools
+Our code did not work on the first try - we had some holes in our teapot. We tried to use the halfedge pointers and debugging tools
 on the GUI and the CLion debugger but this did not end up so useful. In the end, we double-checked our pointer assignments
 and found that we had totally forgotten to update the edges and vertices (only doing halfedges)! After we implemented that,
 our code worked.
@@ -112,11 +112,20 @@ Here's a screenshot of our mesh before and after edge flips and splits.
 | ![teapot-mesh-before-flip-split](./img/teapot-before-split.png) | ![teapot-mesh-after-flip-split](./img/teapot-after-flip-split.png) |
 
 <!-- Write about your eventful debugging journey, if you have experienced one. -->
+
+On first try, our code crashed the GUI. We tried to debug this by using the CLion debugger and seeing what was throwing the exception.
+Unbeknownst to us, the GUI was not crashing due to an exception, but rather an infinite loop. After re-inspecting our pointer
+manipulation, we discovered that we had erroneously updated some of the `next` pointers, resulting in three of them forming a cycle.
+After we squashed this bug, we were able to split edges without issues.
+
 <!-- If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges. -->
 
 # Part 6: Loop Subdivision
 
 <!-- Briefly explain how you implemented the loop subdivision and describe any interesting implementation / debugging tricks you have used. -->
+
+We ran into issues with discerning the  began by implementing the pseudocode from the spec. 
+
 <!-- Take some notes, as well as some screenshots, of your observations on how meshes behave after loop subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some edges? -->
 <!-- Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube becomes slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits so that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain how your pre-processing helps alleviate the effects. -->
 <!-- If you have implemented any extra credit extensions, explain what you did and document how they work with screenshots. -->
