@@ -194,6 +194,16 @@ An example of this rounding out can be seen when rendering the cow. Especially a
 |:---:|:---:|
 | ![cow-0](./img/cow-level-0.png) | ![cow-1](./img/cow-level-1.png) |
 
+*Added on 3/10 for regrade request*
+When we performed loop subdivision on the cube, we saw that it divided asymmetrically.
+
+|:---:|:---:|
+| ![cube-0](./img/cube-0.png) | ![cube-1](./img/cube-1.png) |
+| ![cube-2](./img/cube-2.png) | ![cube-preprocessed-3](./img/cube-3.png) |
+
+![cube-4](./img/cube-4.png){:style="display:block; margin-left: auto; margin-right: auto; width:50%;"}
+
+
 We hypothesize that the cube becomes slightly asymmetric after repeated subdivisions because the corners are not all the same
 for each face (due to the asymmetrical edge orientations over the faces of the cube). The ones that are the vertex of two triangles of a face become subdivided differently than the ones that are the vertex
 of only one triangle of that face. To solve this, our pre-processing step involves splitting the diagonal edges of the cube on
