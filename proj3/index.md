@@ -6,7 +6,7 @@ nav_order: 1
 mathjax: true
 ---
 
-![bunny bunny bunny](./img/bunny.png){:style="display:block; margin-left: auto; margin-right: auto; width:70%;"}
+![bunny bunny bunny](./img/bunny-main.png){:style="display:block; margin-left: auto; margin-right: auto; width:70%;"}
 
 ## Overview
 
@@ -51,7 +51,6 @@ YOUR RESPONSE GOES HERE
     </tr>
   </table>
 </div>
-<br>
 
 ## Part 2: Bounding Volume Hierarchy (20 Points)
 
