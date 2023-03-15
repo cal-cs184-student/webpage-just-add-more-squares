@@ -276,18 +276,32 @@ Pick one scene and render it with at least 2048 samples per pixel. Show a good s
 
 ### Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
 
-Adaptive sampling is where we sample high-frequency regions of the image more because lower-frequency regions do not require as many samples to become relatively noise-free. This is done by comparing the variance of the samples in a region to a threshold value. If the variance is below the threshold, then we do not need to sample that region more. If the variance is above the threshold, then we sample that region more. We can also use a maximum number of samples per region to prevent regions from being sampled too many times.
+Adaptive sampling is where we sample high-frequency regions of the image more because lower-frequency regions do not require as many samples to become relatively noise-free. This is done by comparing the variance of the samples in a region to a threshold value. If the variance is below the threshold, then we do not need to sample that region more. If the variance is above the threshold, then we sample that region more to reduce the variance. We can also use a maximum number of samples per region to prevent regions from being sampled too many times.
 
+There is one subtle detail that makes this process difficult to implement in the code - we have three separate variances, for the R, G, and B channels in the image. We use the `illum` function of `Vector3D` to map this to a single scalar value. From here, we accumulate the variables
 
+$$\begin{align} s_1 &:= \sum_{i=1}^n \texttt{illum}(r_i) \\ s_2 &:= \sum_{i=1}^n (\texttt{illum}(r_i))^2\end{align}$$
+
+where $r_i$ is the estimated global illumination radiance of the $i$th sample. We then compute the desired statistics as
+
+$$\begin{align} \mu &:= \frac{s_1}{n} \\ \sigma^2 &:= \frac{1}{n-1} \left(s_2 - \frac{s_1^2}{n}\right)\end{align}$$
+
+where $\mu$ is the mean and $\sigma^2$ is the variance. The stopping condition is given by
+
+$$ 1.96 \cdot \frac{\sigma}{\sqrt{n}} \leq \text{maxTolerance} \cdot \mu$$
+
+If the statistics satisfy this condition, then no more sampling is done for that pixel. It would be unnecessarily costly to compute these statistics for every sample, so we instead check the stopping condition every `samplesPerBatch` samples.
+
+This process speeds up the sampling process significantly while maintaining most of the quality, as shown in the following renders:
 
 ### Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.
 
 We used a maximum tolerance of 0.05 for adaptive sampling, with 64 samples per batch, a sample rate of 2048, 1 sample per light, and a max ray depth of 5.
 
-| Scene | Sample Rate Image | Rendered Image |
-|:-------------:|:---:|:---:|
-| `CBbunny.dae` (no adaptive) | ![bunny-no-adaptive-rate](./img/bunny-no-adaptive-rate.png)  | ![bunny-no-adaptive](./img/bunny-no-adaptive.png)  |
-| `CBbunny.dae` (adaptive) | ![bunny-adaptive-rate](./img/bunny-adaptive-rate.png)  | ![bunny-adaptive](./img/bunny-adaptive.png)  |
-| `CBcoil.dae` (no adaptive) | ![coil-no-adaptive-rate](./img/coil-no-adaptive-rate.png)  | ![coil-no-adaptive](./img/coil-no-adaptive.png)  |
-| `CBcoil.dae` (adaptive) | ![coil-adaptive-rate](./img/coil-adaptive-rate.png)  | ![coil-adaptive](./img/coil-adaptive.png)  |
+| Scene | Sample Rate Image | Rendered Image | Time to Render (s)
+|:-------------:|:---:|:---:|:---:|
+| `CBbunny.dae` (no adaptive) | ![bunny-no-adaptive-rate](./img/bunny-no-adaptive-rate.png)  | ![bunny-no-adaptive](./img/bunny-no-adaptive.png)  | |
+| `CBbunny.dae` (adaptive) | ![bunny-adaptive-rate](./img/bunny-adaptive-rate.png)  | ![bunny-adaptive](./img/bunny-adaptive.png)  | |
+| `wall-e.dae` (no adaptive) | ![wall-e-no-adaptive-rate](./img/wall-e-no-adaptive-rate.png)  | ![wall-e-no-adaptive](./img/wall-e-no-adaptive.png)  | 2157 |
+| `wall-e.dae` (adaptive) | ![wall-e-adaptive-rate](./img/wall-e-adaptive-rate.png)  | ![wall-e-adaptive](./img/wall-e-adaptive.png)  | 1567 |
 
