@@ -233,6 +233,7 @@ YOUR EXPLANATION GOES HERE
 
 ### Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 
+
 <!-- Example of including multiple figures -->
 <div align="middle">
   <table style="width:100%">
@@ -275,32 +276,18 @@ Pick one scene and render it with at least 2048 samples per pixel. Show a good s
 
 ### Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
 
-YOUR RESPONSE GOES HERE
+Adaptive sampling is where we sample high-frequency regions of the image more because lower-frequency regions do not require as many samples to become relatively noise-free. This is done by comparing the variance of the samples in a region to a threshold value. If the variance is below the threshold, then we do not need to sample that region more. If the variance is above the threshold, then we sample that region more. We can also use a maximum number of samples per region to prevent regions from being sampled too many times.
+
+
 
 ### Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.
 
-<!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Rendered image (example1.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Sample rate image (example1.dae)</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Rendered image (example2.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Sample rate image (example2.dae)</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
+We used a maximum tolerance of 0.05 for adaptive sampling, with 64 samples per batch, a sample rate of 2048, 1 sample per light, and a max ray depth of 5.
+
+| Scene | Sample Rate Image | Rendered Image |
+|:-------------:|:---:|:---:|
+| `CBbunny.dae` (no adaptive) | ![bunny-no-adaptive-rate](./img/bunny-no-adaptive-rate.png)  | ![bunny-no-adaptive](./img/bunny-no-adaptive.png)  |
+| `CBbunny.dae` (adaptive) | ![bunny-adaptive-rate](./img/bunny-adaptive-rate.png)  | ![bunny-adaptive](./img/bunny-adaptive.png)  |
+| `CBcoil.dae` (no adaptive) | ![coil-no-adaptive-rate](./img/coil-no-adaptive-rate.png)  | ![coil-no-adaptive](./img/coil-no-adaptive.png)  |
+| `CBcoil.dae` (adaptive) | ![coil-adaptive-rate](./img/coil-adaptive-rate.png)  | ![coil-adaptive](./img/coil-adaptive.png)  |
+
