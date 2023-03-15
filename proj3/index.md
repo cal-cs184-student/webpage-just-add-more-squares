@@ -133,33 +133,14 @@ YOUR RESPONSE GOES HERE
 
 ### Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.
 
-<!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="200px"/>
-        <figcaption>1 Light Ray (example1.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="200px"/>
-        <figcaption>4 Light Rays (example1.dae)</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="200px"/>
-        <figcaption>16 Light Rays (example1.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="200px"/>
-        <figcaption>64 Light Rays (example1.dae)</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
+| Number of Light Rays | `CBbunny.dae` |
+|:---:|:---:|
+| 1 | ![CBbunny 1 Ray](./img/part-3/bunny-l-1.png) |
+| 4 | ![CBbunny 4 Rays](./img/part-3/bunny-l-4.png) |
+| 16 | ![CBbunny 16 Rays](./img/part-3/bunny-l-16.png) |
+| 64 | ![CBbunny 64 Rays](./img/part-3/bunny-l-64.png) |
 
-YOUR EXPLANATION GOES HERE
+When sampling with more light rays, the shadow of the bunny becomes significantly softer, even with just one sample per pixel. This is because we are using importance sampling, so having more samples per light source has a smoothing effect for pixels that are on the edges of shadows, due to the fact that sometimes they will hit a point on the light and other times be obstructed. When we have more light rays, we can average this effect, so the shadows will become softer.
 
 ### Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.
 
@@ -222,7 +203,7 @@ YOUR EXPLANATION GOES HERE
 | 100 | ![Bunny-100](./img/part-4/bunny-100.png)  |
 
 
-We generated each of these renders using Russian roulette. As `max_ray_depth` increases, indirect lighting from reflections and bounces have more paths available to every single point. This means that the image will generally be brighter because there are more light "sources," (the reflections off non-light-source points) and we also will gain reflected colors (most easily seen in the slightly reddish-bluish ceiling of the 100-depth render). Also, the shadows become softer and are also tinted the color of the walls.
+We generated each of these renders using Russian roulette with a termination probability of 0.3. As `max_ray_depth` increases, indirect lighting from reflections and bounces have more paths available to every single point. This means that the image will generally be brighter because there are more light "sources," (the reflections off non-light-source points) and we also will gain reflected colors (most easily seen in the slightly reddish-bluish ceiling of the 100-depth render). Also, the shadows become softer and are also tinted the color of the walls.
 
 ### Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 
@@ -237,7 +218,9 @@ We generated each of these renders using Russian roulette. As `max_ray_depth` in
 | 256 | ![Spheres-256](./img/part-4/spheres-256.png)  |
 | 1024 | ![Spheres-1024](./img/part-4/spheres-1024.png)  |
 
-For the above renders, we also used adaptive sampling with a tolerance of 0.03 and a batch size of 64, though it only changed the number of samples for the 256- and 1024-sample-rate renders. We can see that with more samples per pixel, the image gets brighter, but also less noisy. This is because the variance of whether 
+For the above renders, we used 16 samples per area light, with a maximum ray depth of 1000. We can see that with more samples per pixel, the image gets significantly less noisy and appears slightly brighter.
+
+<!-- TODO: Add reasoning why this is the case. -->
 
 ## Part 5: Adaptive Sampling (20 Points)
 
