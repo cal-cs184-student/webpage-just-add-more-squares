@@ -76,12 +76,12 @@ Otherwise, we must split the BVH node further. In order to do so, we use the `ex
 
 Our BVH acceleration resulted in speedup for most images, sometimes orders of magnitudes faster, when rendering images. As the number of primitives in the object increased, the speedup became more and more noticeable. However, if there were only a handful of primitives (like CBspheres), not using BVH was faster because there's less overhead. The results from a couple of these images are compiled below:
 
-| Image | Rendering Time (without BVH) | Rendering Time (with BVH) |
+| Image | Rendering Time without BVH (s) | Rendering Time with BVH (s) |
 |:---:|:---:|:---:|
-| CBspheres | 0.0428 | 0.0502 s |
-| teapot | 2.4553 s | 0.0572 s |
-| cow | 5.4124 s | 0.0569 s |
-| bunny | 38.2385 s | 0.0806 s |
+| CBspheres | 0.0428 | 0.0502 |
+| teapot | 2.4553 | 0.0572 |
+| cow | 5.4124 | 0.0569 |
+| bunny | 38.2385 | 0.0806 |
 
 
 ## Part 3: Direct Illumination (20 Points)
