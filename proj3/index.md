@@ -20,11 +20,11 @@ YOUR RESPONSE GOES HERE
 
 During ray generation, we take a coordinate in the image and create a corresponding ray in the world space. 
 
-The first step involves taking a normalized image coordinate ($(x, y)$ where $w, y \in [0, 1]$) and converting it to the camera space. Specifically, the camera space assumes there's a sensor at $z = -1$ and has corners at $(-tan(\frac{hFov}{2}), -tan(\frac{vFov}{2}), -1)$ and $(tan(\frac{hFov}{2}), tan(\frac{vFov}{2}), -1)$. By taking $(x, y)$ and linearly interpolating along the axes of the rectangles, we get the camera space coordinates.
+The first step involves taking a normalized image coordinate ($(x, y)$ where $w, y \in [0, 1]$) and converting it to the camera space. Specifically, the camera space assumes there's a sensor at $z = -1$ and has corners at $(-\tan(\frac{\text{hFov}}{2}), -\tan(\frac{\text{vFov}}{2}), -1)$ and $(\tan(\frac{\text{hFov}}{2}), \tan(\frac{\text{vFov}}{2}), -1)$. By taking $(x, y)$ and linearly interpolating along the axes of the rectangles, we get the camera space coordinates.
 
-$x_C = (1 - x) * -tan(\frac{hFov}{2}) + x * tan(\frac{hFov}{2})$
+$x_C = (1 - x) \cdot -\tan(\frac{\text{hFov}}{2}) + x \cdot \tan(\frac{\text{hFov}}{2})$
 
-$y_C = (1 - y) * -tan(\frac{vFov}{2}) + y * tan(\frac{vFov}{2})$
+$y_C = (1 - y) \cdot -\tan(\frac{\text{vFov}}{2}) + y \cdot \tan(\frac{\text{vFov}}{2})$
 
 $z_C = -1$
 
@@ -46,9 +46,9 @@ Additionally, upon intersection, we need to update some of the variables in `ise
 
 | **CBspheres.dae** | **CBcoil.dae** |
 |:---:|:---:|
-| ![CBspheres](img/CBspheres.png) | ![CBcoil](img/CBcoil.png) |
+| ![CBspheres](./img/part-1/CBspheres.png) | ![CBcoil](./img/part-1/CBcoil.png) |
 | **cow.dae** | **bench.dae** |
-| ![cow](img/cow.png) | ![bench](img/bench.png) |
+| ![cow](./img/part-1/cow.png) | ![bench](./img/part-1/bench.png) |
 
 ## Part 2: Bounding Volume Hierarchy (20 Points)
 
@@ -60,7 +60,7 @@ First, we compute the bounding box `bbox` of all primitives in the node by loopi
 
 If the BVH node we created contains fewer than `max_leaf_size` primitives, it will be a leaf node with all of the primitives.
 
-Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives. We then take the median centroid to split on and recursively construct the left and right BVH nodes.
+Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives. We then take the median centroid `mid` to split on using pointer arithmetic and recursively construct the left and right BVH nodes with all the primitives from `start` to `mid` and `mid` to `end`, respectively. Because we're using the median in this manner, there will always be non-empty collections of primitives on each side of the split.
 
 ### Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
 
@@ -68,9 +68,9 @@ Otherwise, we must split the BVH node further. In order to do so, we use the `ex
 
 | **CBlucy.dae** | **CBdragon.dae** |
 |:---:|:---:|
-| ![CBspheres](img/lucy.png) | ![CBdragon](img/CBdragon.png) |
+| ![CBlucy](./img/part-2/lucy.png) | ![CBdragon](./img/part-2/CBdragon.png) |
 | **blob.dae** | **wall-e.dae** |
-| ![blob](img/blob.png) | ![wall-e](img/wall-e.png) |
+| ![blob](./img/part-2/blob.png) | ![wall-e](./img/part-2/wall-e.png) |
 
 ### Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.
 
