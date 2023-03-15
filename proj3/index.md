@@ -10,9 +10,32 @@ mathjax: true
 
 ## Overview
 
-YOUR RESPONSE GOES HERE
+In this project, we implemented a path tracer. We began by finding a way to
+determine intersections for triangles and spheres in a naive manner. This
+approach is intractable for high-poly meshes, so we implemented a bounding volume
+hierarchy (BVH) to accelerate the intersection tests. From here, we implemented
+lighting for diffuse materials, and estimated the lighting integrals using Monte
+Carlo integration. We improved our sampling algorithm by using importance
+sampling for lights. We implemented a recursive ray tracing algorithm to handle
+reflections and refractions, or indirect lighting, with Russian roulette to
+terminate rays. Finally, we determined a way to prioritize drawing samples for
+high-frequency areas of images that need more samples to converge, resulting in
+a significant performance boost to our ray tracing algorithm.
 
-<br>
+We mostly implemented these features by using the pseudocode and formulas from
+the spec and slides. When implementing the BVH, though, we strayed off the
+beaten path - we sorted the iterators using `std::sort` by the longest axis and
+used pointer arithmetic to find the median centroid. In this way, we would never
+have to deal with the case where no splitting is done. 
+
+We ran into many segmentation faults and slightly incorrect renders during this
+project. We were able to solve them via print debugging and the CLion exception
+break, though it was very difficult because of the rendering code. We completed
+all of the coding portion before the write-up, so portions where we had to go
+back and change our code suddenly became very painful because we had forgotten
+to change one small thing such as turning off adaptive sampling or not running
+`cmake`, etc. It was made more punishing because some of the renders took hours
+to run, and we ran with some incorrect settings.
 
 ## Part 1: Ray Generation and Scene Intersection (20 Points)
 
@@ -20,7 +43,7 @@ YOUR RESPONSE GOES HERE
 
 During ray generation, we take a coordinate in the image and create a corresponding ray in the world space. 
 
-The first step involves taking a normalized image coordinate ($(x, y)$ where $w, y \in [0, 1]$) and converting it to the camera space. Specifically, the camera space assumes there's a sensor at $z = -1$ and has corners at $(-\tan(\frac{\text{hFov}}{2}), -\tan(\frac{\text{vFov}}{2}), -1)$ and $(\tan(\frac{\text{hFov}}{2}), \tan(\frac{\text{vFov}}{2}), -1)$. By taking $(x, y)$ and linearly interpolating along the axes of the rectangles, we get the camera space coordinates.
+The first step involves taking a normalized image coordinate ($(x, y)$ where $x, y \in [0, 1]$) and converting it to the camera space. Specifically, the camera space assumes there's a sensor at $z = -1$ and has corners at $(-\tan(\frac{\text{hFov}}{2}), -\tan(\frac{\text{vFov}}{2}), -1)$ and $(\tan(\frac{\text{hFov}}{2}), \tan(\frac{\text{vFov}}{2}), -1)$. By taking $(x, y)$ and linearly interpolating along the axes of the rectangles, we get the camera space coordinates.
 
 $x_C = (1 - x) \cdot -\tan(\frac{\text{hFov}}{2}) + x \cdot \tan(\frac{\text{hFov}}{2})$
 
@@ -209,3 +232,23 @@ We used a maximum tolerance of 0.05 for adaptive sampling, with 64 samples per b
 | `wall-e.dae` (adaptive) | ![wall-e-adaptive-rate](./img/part-5/wall-e-adaptive-rate.png)  | ![wall-e-adaptive](./img/part-5/wall-e-adaptive.png)  | 1567 |
 
 More-frequently-sampled regions are red, and less-frequently-sampled regions are blue. We can see that high-frequency (detailed) regions of the images are sampled more frequently and low-frequency (smooth) regions are sampled less frequently. This results in a significant speedup in rendering time while maintaining most of the quality.
+
+
+# Partner Reflection
+
+We regularly met up to work on the tasks synchronously (pair programming). We
+found that it often felt like one person was doing all the work while the other
+stood idly and watched, so we came up with a system where we would both
+simultaneously try the task and whoever finished first would help the other one
+debug their code. We found that this had all the benefits of pair programming
+where we can bounce ideas off each other but also figure out the tasks on our
+own. We split up the write-up by task. 
+
+Overall, this project strengthened the concepts described in the overview,
+and we learned a lot about how to debug and optimize code, especially some C++
+tricks. The visual feedback from the renders was satisfying, but renders were
+also quite frustrating to debug because 1) it is difficult to tell if the
+renders are of the expected outputs, and 2) it is difficult to tell where the
+errors would be in the code. We also learned about how to SSH into the hive
+machines and detach processes to be safe in the case of disconnection.
+
