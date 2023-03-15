@@ -62,9 +62,11 @@ If the BVH node we created contains fewer than `max_leaf_size` primitives, it wi
 
 Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives. We then take the median centroid `mid` to split on using pointer arithmetic and recursively construct the left and right BVH nodes with all the primitives from `start` to `mid` and `mid` to `end`, respectively. Because we're using the median in this manner, there will always be non-empty collections of primitives on each side of the split.
 
-### Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
+<!-- Show images with normal shading for a few large .dae files that you can only render with BVH acceleration. -->
 
 <!-- Example of including multiple figures -->
+
+Here are some images that could be rendered in reasonable time now that we've implemented BVH acceleration.
 
 | **CBlucy.dae** | **CBdragon.dae** |
 |:---:|:---:|
@@ -72,9 +74,9 @@ Otherwise, we must split the BVH node further. In order to do so, we use the `ex
 | **blob.dae** | **wall-e.dae** |
 | ![blob](./img/part-2/blob.png) | ![wall-e](./img/part-2/wall-e.png) |
 
-### Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.
+<!-- Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis. -->
 
-Our BVH acceleration resulted in speedup for most images, sometimes orders of magnitudes faster, when rendering images. As the number of primitives in the object increased, the speedup became more and more noticeable. However, if there were only a handful of primitives (like CBspheres), not using BVH was faster because there's less overhead. The results from a couple of these images are compiled below:
+Comparing rendering times with and without BVH acceleration, our BVH acceleration resulted in speedup for most images, sometimes orders of magnitudes faster, when rendering images. As the number of primitives in the object increased, the speedup became more and more noticeable. However, if there were only a handful of primitives (like CBspheres), not using BVH was faster because there's less overhead. The results from a couple of these images are compiled below:
 
 | Image | Rendering Time without BVH (s) | Rendering Time with BVH (s) |
 |:---:|:---:|:---:|
