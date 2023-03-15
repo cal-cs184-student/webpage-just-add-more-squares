@@ -229,36 +229,14 @@ YOUR EXPLANATION GOES HERE
 
 
 <!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>max_ray_depth = 0 (CBbunny.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>max_ray_depth = 1 (CBbunny.dae)</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>max_ray_depth = 2 (CBbunny.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>max_ray_depth = 3 (CBbunny.dae)</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>max_ray_depth = 100 (CBbunny.dae)</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
+
+| **max_ray_depth = 0** | **max_ray_depth = 1** |
+|:---:|:---:|
+| ![bunny-0](img/bunny-0.png) | ![bunny-1](img/bunny-1.png) |
+| **max_ray_depth = 2** | **max_ray_depth = 3** |
+| ![bunny-2](img/bunny-2.png) | ![bunny-3](img/bunny-3.png) |
+| **max_ray_depth = 100** |
+| ![bunny-100](img/bunny-100.png) |
 
 YOUR EXPLANATION GOES HERE
 
