@@ -222,7 +222,7 @@ YOUR EXPLANATION GOES HERE
 | 100 | ![Bunny-100](./img/part-4/bunny-100.png)  |
 
 
-As `max_ray_depth` increases, 
+We generated each of these renders using Russian roulette. As `max_ray_depth` increases, indirect lighting from reflections and bounces have more paths available to every single point. This means that the image will generally be brighter because there are more light "sources," (the reflections off non-light-source points) and we also will gain reflected colors (most easily seen in the slightly reddish-bluish ceiling of the 100-depth render). Also, the shadows become softer and are also tinted the color of the walls.
 
 ### Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 
@@ -234,9 +234,10 @@ As `max_ray_depth` increases,
 | 8 | ![Spheres-8](./img/part-4/spheres-8.png)  |
 | 16 | ![Spheres-16](./img/part-4/spheres-16.png)  |
 | 64 | ![Spheres-64](./img/part-4/spheres-64.png)  |
+| 256 | ![Spheres-256](./img/part-4/spheres-256.png)  |
 | 1024 | ![Spheres-1024](./img/part-4/spheres-1024.png)  |
 
-YOUR EXPLANATION GOES HERE
+For the above renders, we also used adaptive sampling with a tolerance of 0.03 and a batch size of 64, though it only changed the number of samples for the 256- and 1024-sample-rate renders. We can see that with more samples per pixel, the image gets brighter, but also less noisy. This is because the variance of whether 
 
 ## Part 5: Adaptive Sampling (20 Points)
 
