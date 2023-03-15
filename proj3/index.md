@@ -157,21 +157,10 @@ YOUR RESPONSE GOES HERE
 
 ### Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
 
-<!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
+| Scene | Render |
+|:---:|:---:|
+| `CBspheres_lambertian.dae` | ![spheres](./img/part-4/spheres-1024-16.png) |
+| `dragon.dae` | ![dragon](./img/part-4/dragon-1024-16.png) |
 
 ### Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
 
