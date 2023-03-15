@@ -44,50 +44,45 @@ Additionally, upon intersection, we need to update some of the variables in `ise
 
 <!-- Show images with normal shading for a few small .dae files. -->
 
-| **CBspheres.dae** | **CBlucy.dae** |
-| ![CBspheres](img/CBspheres.png) | ![CBlucy](img/lucy.png) |
+| **CBspheres.dae** | **CBcoil.dae** |
 |:---:|:---:|
-| **blob.dae** | **wall-e.dae** |
-|:---:|:---:|
-| ![blob](img/blob.png) | ![wall-e](img/wall-e.png) |
+| ![CBspheres](img/CBspheres.png) | ![CBcoil](img/CBcoil.png) |
+| **cow.dae** | **bench.dae** |
+| ![cow](img/cow.png) | ![bench](img/bench.png) |
 
 ## Part 2: Bounding Volume Hierarchy (20 Points)
 
 ### Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
 
-YOUR RESPONSE GOES HERE
+Our BVH construction algorithm recursively creates the BVH nodes by splitting at the median centroid along the longest axis and terminating when there are fewer than `max_leaf_size` primitives left.
+
+First, we compute the bounding box `bbox` of all primitives in the node by looping through the node and expanding by the primitive's bounding box. Using this bounding box, we create a new BVH node.
+
+If the BVH node we created contains fewer than `max_leaf_size` primitives, it will be a leaf node with all of the primitives.
+
+Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives. We then take the median centroid to split on and recursively construct the left and right BVH nodes.
 
 ### Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
 
 <!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example3.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example4.dae</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
+
+| **CBlucy.dae** | **CBdragon.dae** |
+|:---:|:---:|
+| ![CBspheres](img/lucy.png) | ![CBdragon](img/CBdragon.png) |
+| **blob.dae** | **wall-e.dae** |
+| ![blob](img/blob.png) | ![wall-e](img/wall-e.png) |
 
 ### Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.
 
-YOUR RESPONSE GOES HERE
+Our BVH acceleration resulted in speedup for most images, sometimes orders of magnitudes faster, when rendering images. As the number of primitives in the object increased, the speedup became more and more noticeable. However, if there were only a handful of primitives (like CBspheres), not using BVH was faster because there's less overhead. The results from a couple of these images are compiled below:
+
+| Image | Rendering Time (without BVH) | Rendering Time (with BVH) |
+|:---:|:---:|:---:|
+| CBspheres | 0.0428 | 0.0502 s |
+| teapot | 2.4553 s | 0.0572 s |
+| cow | 5.4124 s | 0.0569 s |
+| bunny | 38.2385 s | 0.0806 s |
+
 
 ## Part 3: Direct Illumination (20 Points)
 
