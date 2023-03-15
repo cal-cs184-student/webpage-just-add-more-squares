@@ -46,9 +46,15 @@ Additionally, upon intersection, we need to update some of the variables in `ise
 
 | **CBspheres.dae** | **CBcoil.dae** |
 |:---:|:---:|
+<<<<<<< HEAD
 | ![CBspheres](./img/part-1/CBspheres.png) | ![CBcoil](./img/part-1/CBcoil.png) |
 | **cow.dae** | **bench.dae** |
 | ![cow](./img/part-1/cow.png) | ![bench](./img/part-1/bench.png) |
+=======
+| ![CBspheres](img/part-1/CBspheres.png) | ![CBcoil](img/part-1/CBcoil.png) |
+| **cow.dae** | **bench.dae** |
+| ![cow](img/part-1/cow.png) | ![bench](img/part-1/bench.png) |
+>>>>>>> fb88054 (Move images and add direct/indirect comparison)
 
 ## Part 2: Bounding Volume Hierarchy (20 Points)
 
@@ -70,9 +76,15 @@ Here are some images that could be rendered in reasonable time now that we've im
 
 | **CBlucy.dae** | **CBdragon.dae** |
 |:---:|:---:|
+<<<<<<< HEAD
 | ![CBlucy](./img/part-2/lucy.png) | ![CBdragon](./img/part-2/CBdragon.png) |
 | **blob.dae** | **wall-e.dae** |
 | ![blob](./img/part-2/blob.png) | ![wall-e](./img/part-2/wall-e.png) |
+=======
+| ![CBspheres](img/part-2/lucy.png) | ![CBdragon](img/part-2/CBdragon.png) |
+| **blob.dae** | **wall-e.dae** |
+| ![blob](img/part-2/blob.png) | ![wall-e](img/part-2/wall-e.png) |
+>>>>>>> fb88054 (Move images and add direct/indirect comparison)
 
 <!-- Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis. -->
 
@@ -190,6 +202,10 @@ YOUR RESPONSE GOES HERE
     </tr>
   </table>
 </div>
+
+| Only direct illumination | Only indirect illumination |
+|:-------------:|:---:|
+| ![direct](./img/part-4/spheres-direct.png) | ![Bunny-0](./img/part-4/spheres-indirect.png)  |
 
 YOUR EXPLANATION GOES HERE
 
