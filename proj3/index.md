@@ -113,7 +113,9 @@ Comparing rendering times with and without BVH acceleration, our BVH acceleratio
 
 ### Walk through both implementations of the direct lighting function.
 
-YOUR RESPONSE GOES HERE
+For hemisphere sampling, we first sample for $w_i$, convert it to the world space, and create a ray. This ray is then used to intersect with the object's BVH. Once we get the intersection point, we can compute the term for the Monte Carlo estimation: $\frac{f_{BSDF}(w_{out} \rightarrow w_{in})L_i(p, w_{in})\cos(\theta_{in})}{p(w_in)}$. After averaging over the samples, we get the Monte Carlo estimation.
+
+For lighting importance sampling, we instead loop through the scene's lights and sample some number of rays in the direction of each light: 1 for point lights and `ns_area_light` for area lights. For each light, we use `sample_L` to sample the in direction (because we're tracing rays in the inverse direction), also getting the distance to the light and PDF as well. Then, similar to hemisphere sampling, we compute the term for Monte Carlo estimation. And, after averaging, we get the overall estimation for the full integral.
 
 ### Show some images rendered with both implementations of the direct lighting function.
 
@@ -138,7 +140,7 @@ When sampling with more light rays, the shadow of the bunny becomes significantl
 
 ### Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.
 
-YOUR RESPONSE GOES HERE
+Uniform hemisphere sampling tended to be noisier than lighting sampling because a lot of the rays sampled in the uniform approach don't end up hitting the single light. As a result, fewer of the samples actually give useful information. On the other hand, lighting sampling specifically samples rays directed towards the light, so each sample gives a larger signal. Another difference between the two sampling methods is that lighting sampling probably converges faster. Each sample on average provides more useful information because it specifically targets in the light's direction, rather than a random direction that might not hit the light.
 
 
 ## Part 4: Global Illumination (20 Points)
@@ -162,7 +164,7 @@ For indirect lighting, we initialize rays with a depth equal to the maximum ray 
 |:-------------:|:---:|
 | ![direct](./img/part-4/spheres-direct.png) | ![Bunny-0](./img/part-4/spheres-indirect.png)  |
 
-YOUR EXPLANATION GOES HERE
+In direct illumination, we include both the zero bounce and no bounce radiance. For example, we see all of the light coming directly from the light source at the ceiling. We also see all the one bounce radiance either off the ball's top half or from the walls/floor of the box. Indirect illumination includes all the light from more than one bounces. On the left and right sides of the balls, we see rays that came from the light, reflected off of a wall, reflected off the ball, and then through the camera. We also see light that bounces off of a ball, off the walls, and then to the camera. In general, rays that bounces multiple times before reaching the camera (or light if you're tracing in the opposite direction) are included in this indirect illumination.
 
 
 ### For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
