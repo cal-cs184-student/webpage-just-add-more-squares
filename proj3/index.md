@@ -16,41 +16,40 @@ YOUR RESPONSE GOES HERE
 
 ## Part 1: Ray Generation and Scene Intersection (20 Points)
 
-### Walk through the ray generation and primitive intersection parts of the rendering pipeline.
+<!-- Walk through the ray generation and primitive intersection parts of the rendering pipeline. -->
 
-YOUR RESPONSE GOES HERE
+During ray generation, we take a coordinate in the image and create a corresponding ray in the world space. 
 
-### Explain the triangle intersection algorithm you implemented in your own words.
+The first step involves taking a normalized image coordinate ($(x, y)$ where $w, y \in [0, 1]$) and converting it to the camera space. Specifically, the camera space assumes there's a sensor at $z = -1$ and has corners at $(-tan(\frac{hFov}{2}), -tan(\frac{vFov}{2}), -1)$ and $(tan(\frac{hFov}{2}), tan(\frac{vFov}{2}), -1)$. By taking $(x, y)$ and linearly interpolating along the axes of the rectangles, we get the camera space coordinates.
 
-YOUR RESPONSE GOES HERE
+$x_C = (1 - x) * -tan(\frac{hFov}{2}) + x * tan(\frac{hFov}{2})$
 
-### Show images with normal shading for a few small .dae files.
+$y_C = (1 - y) * -tan(\frac{vFov}{2}) + y * tan(\frac{vFov}{2})$
 
-<!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
-      </td>
-    </tr>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example3.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example4.dae</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
+$z_C = -1$
+
+Then, to get a ray in the world space, we set the origin of the ray to the camera's position and we multiply the camera-space vector by our camera-to-world coordinate transform matrix `c2w`.
+
+Now that we are able to generate a ray given a coordinate in the image space, we utilized it to sample pixels of the image. In each pixel, we use a sampler to choose points within the pixel. For each point, we generate a ray that goes through it and compute the average radiance along all our sampled rays. We accumulate this information in our sample buffer.
+
+To sample along each ray direction, we also need to know where our ray intersects different objects (primitives) inside of our world. During this part of the project, we implemented intersections for both triangles and spheres. Overall, the process involves first running a primitive-ray intersection test, then setting variables like the normal direction, distance until intersection, BSDF at the intersection point, and so on.
+
+<!-- Explain the triangle intersection algorithm you implemented in your own words. -->
+
+For example, with triangle intersection, we compute the intersection point using the [Moller-Trumbore algorithm](https://cs184.eecs.berkeley.edu/sp23/lecture/9-22/intro-to-ray-tracing-and-acceler). This algorithm solves for $t, b_1, b_2$ where $t$ is the ray parameter and $b_1, b_2$ are two of the barycentric coordinates of the triangle we're checking intersection with.
+
+In order to be an intersection, `t` must be between the ray's `min_t` and `max_t` variables and the barycentric coordinates must be non-negative.
+
+Additionally, upon intersection, we need to update some of the variables in `isect`. Specifically, we want to update the ray's `max_t` to `t` because we don't want to consider intersections behind the one we just found. We also want to use the barycentric coordinates to interpolate the normal direction using the normals at the vertices. Finally, we want to set the primitive and it's corresponding BSDF.
+
+<!-- Show images with normal shading for a few small .dae files. -->
+
+| **CBspheres.dae** | **CBlucy.dae** |
+| ![CBspheres](img/CBspheres.png) | ![CBlucy](img/lucy.png) |
+|:---:|:---:|
+| **blob.dae** | **wall-e.dae** |
+|:---:|:---:|
+| ![blob](img/blob.png) | ![wall-e](img/wall-e.png) |
 
 ## Part 2: Bounding Volume Hierarchy (20 Points)
 
