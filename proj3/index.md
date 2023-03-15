@@ -213,33 +213,30 @@ YOUR EXPLANATION GOES HERE
 
 ### For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
 
-| `max_ray_depth` | result |
+| `max_ray_depth` | `CBbunny.dae` render |
 |:-------------:|:---:|
-| 0 | ![Bunny-0](./img/bunny-0.png)  |
-| 1 | ![Bunny-1](./img/bunny-1.png)  |
-| 2 | ![Bunny-2](./img/bunny-2.png)  |
-| 3 | ![Bunny-3](./img/bunny-3.png)  |
-| 100 | ![Bunny-100](./img/bunny-100.png)  |
+| 0 | ![Bunny-0](./img/part-4/bunny-0.png)  |
+| 1 | ![Bunny-1](./img/part-4/bunny-1.png)  |
+| 2 | ![Bunny-2](./img/part-4/bunny-2.png)  |
+| 3 | ![Bunny-3](./img/part-4/bunny-3.png)  |
+| 100 | ![Bunny-100](./img/part-4/bunny-100.png)  |
 
 
-YOUR EXPLANATION GOES HERE
-
+As `max_ray_depth` increases, 
 
 ### Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 
-
-<!-- Example of including multiple figures -->
-
-| **max_ray_depth = 0** | **max_ray_depth = 1** |
-|:---:|:---:|
-| ![bunny-0](img/bunny-0.png) | ![bunny-1](img/bunny-1.png) |
-| **max_ray_depth = 2** | **max_ray_depth = 3** |
-| ![bunny-2](img/bunny-2.png) | ![bunny-3](img/bunny-3.png) |
-| **max_ray_depth = 100** |
-| ![bunny-100](img/bunny-100.png) |
+| Sample Rate | `CBspheres.dae` render |
+|:-------------:|:---:|
+| 1 | ![Spheres-1](./img/part-4/spheres-1.png)  |
+| 2 | ![Spheres-2](./img/part-4/spheres-2.png)  |
+| 4 | ![Spheres-4](./img/part-4/spheres-4.png)  |
+| 8 | ![Spheres-8](./img/part-4/spheres-8.png)  |
+| 16 | ![Spheres-16](./img/part-4/spheres-16.png)  |
+| 64 | ![Spheres-64](./img/part-4/spheres-64.png)  |
+| 1024 | ![Spheres-1024](./img/part-4/spheres-1024.png)  |
 
 YOUR EXPLANATION GOES HERE
-
 
 ## Part 5: Adaptive Sampling (20 Points)
 
