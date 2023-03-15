@@ -153,14 +153,16 @@ YOUR RESPONSE GOES HERE
 
 ### Walk through your implementation of the indirect lighting function.
 
-YOUR RESPONSE GOES HERE
+For indirect lighting, we initialize rays with a depth equal to the maximum ray depth, and decrement for each bounce, recursing until we get to depth 0.
 
 ### Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
 
 | Scene | Render |
 |:---:|:---:|
 | `CBspheres_lambertian.dae` | ![spheres](./img/part-4/spheres-1024-16.png) |
+| `blob.dae` | ![blob](./img/part-4/blob-1024-16.png) |
 | `dragon.dae` | ![dragon](./img/part-4/dragon-1024-16.png) |
+| `wall-e.dae` | ![wall-e](./img/part-4/wall-e-1024-16.png) |
 
 ### Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
 
