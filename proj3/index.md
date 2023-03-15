@@ -94,44 +94,13 @@ YOUR RESPONSE GOES HERE
 
 ### Show some images rendered with both implementations of the direct lighting function.
 
-<!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <!-- Header -->
-    <tr align="center">
-      <th>
-        <b>Uniform Hemisphere Sampling</b>
-      </th>
-      <th>
-        <b>Light Sampling</b>
-      </th>
-    </tr>
-    <br>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example1.dae</figcaption>
-      </td>
-    </tr>
-    <br>
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>example2.dae</figcaption>
-      </td>
-    </tr>
-    <br>
-  </table>
-</div>
-<br>
+| Scene | Uniform Hemisphere Sampling | Importance Sampling |
+|:---:|:---:|:---:|
+| `CBempty.dae` | ![empty-H](./img/part-3/direct-lighting/empty-H.png) | ![empty-I](./img/part-3/direct-lighting/empty-I.png) |
+| `CBspheres_lambertian.dae` | ![spheres-H](./img/part-3/direct-lighting/spheres-H.png) | ![spheres-I](./img/part-3/direct-lighting/spheres-I.png) |
+| `CBbunny.dae` | ![bunny-H](./img/part-3/direct-lighting/bunny-H.png) | ![bunny-I](./img/part-3/direct-lighting/bunny-I.png) |
+
+The above renders used a sample rate of 4 per pixel and 16 samples per light.
 
 ### Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.
 
@@ -165,22 +134,6 @@ For indirect lighting, we initialize rays with a depth equal to the maximum ray 
 | `wall-e.dae` | ![wall-e](./img/part-4/wall-e-1024-16.png) |
 
 ### Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
-
-<!-- Example of including multiple figures -->
-<div align="middle">
-  <table style="width:100%">
-    <tr align="center">
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Only direct illumination (example1.dae)</figcaption>
-      </td>
-      <td>
-        <img src="images/your_file.png" align="middle" width="400px"/>
-        <figcaption>Only indirect illumination (example1.dae)</figcaption>
-      </td>
-    </tr>
-  </table>
-</div>
 
 | Only direct illumination | Only indirect illumination |
 |:-------------:|:---:|
