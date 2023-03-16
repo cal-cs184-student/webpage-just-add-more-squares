@@ -158,6 +158,8 @@ Overall, uniform hemisphere sampling tended to be noisier than lighting sampling
 <!-- Walk through your implementation of the indirect lighting function. -->
 
 For indirect lighting, we initialize rays with a depth equal to the maximum ray depth, and decrement for each bounce, recursing until we get to depth 0.
+We add the `one_bounce_radiance` and recurse on the next intersection point with `at_least_one_bounce_radiance` on that ray, and the base case is just a call to `zero_bounce_radiance`. In this manner, we garner the one-bounce radiance, two-bounce radiance, and so on, terminating via Russian roulette with a probability of 0.3. We then add the radiance to the final radiance, and return it.
+
 
 <!-- Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel. -->
 
