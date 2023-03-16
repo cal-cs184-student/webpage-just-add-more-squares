@@ -83,7 +83,7 @@ First, we compute the bounding box `bbox` of all primitives in the node by loopi
 
 If the BVH node we created contains fewer than `max_leaf_size` primitives, it will be a leaf node with all of the primitives.
 
-Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives. We then take the median centroid `mid` to split on using pointer arithmetic and recursively construct the left and right BVH nodes with all the primitives from `start` to `mid` and `mid` to `end`, respectively. Because we're using the median in this manner, there will always be non-empty collections of primitives on each side of the split.
+Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives (see Extra Credit). We then take the median centroid `mid` to split on using pointer arithmetic and recursively construct the left and right BVH nodes with all the primitives from `start` to `mid` and `mid` to `end`, respectively. Because we're using the median in this manner, there will always be non-empty collections of primitives on each side of the split.
 
 Here are some images showing the results of our BVH.
 
@@ -241,8 +241,51 @@ We used a maximum tolerance of 0.05 for adaptive sampling, with 64 samples per b
 
 More-frequently-sampled regions are red, and less-frequently-sampled regions are blue. We can see that high-frequency (detailed) regions of the images are sampled more frequently and low-frequency (smooth) regions are sampled less frequently. This results in a significant speedup in rendering time while maintaining most of the quality.
 
+## Extra Credit
+- We implemented a more memory-efficient BVH where we only track pointers to a single vector of Primitives. To do so, we use the in-place sort method and sort based on the centroid location along the chosen axis. Then, we choose the median Primitive (based on the centroid's location), which is just the middle element in the now-sorted vector. Given $N$ primitives and $M$ max leaf size, the memory required for this BVH implementation would be $\Theta(N)$. A more naive implementation that creates new vectors at each level would require $\Theta(N)$ per level. Assuming we split pretty evenly, there would be $\Theta(\log(N / M))$ levels, giving a total memory of $\Theta(N\log(N / M))$.
 
-# Partner Reflection
+```
+BVHNode *BVHAccel::construct_bvh(std::vector<Primitive *>::iterator start,
+                                 std::vector<Primitive *>::iterator end,
+                                 size_t max_leaf_size) {
+  BBox bbox;
+  int count = 0;
+  for (auto p = start; p != end; p++) {
+    BBox bb = (*p)->get_bbox();
+    bbox.expand(bb);
+    count++;
+  }
+
+  BVHNode *node = new BVHNode(bbox);
+
+  if (count <= max_leaf_size) {
+    node->start = start;
+    node->end = end;
+  } else {
+    Vector3D extent = bbox.extent;
+    int largestAxis = 0;
+    double largestAxisLength = extent[0];
+    for (int i = 1; i <= 2; i++) {
+      if (extent[i] > largestAxisLength) {
+        largestAxisLength = extent[i];
+        largestAxis = i;
+      }
+    }
+
+    sort(start, end, [largestAxis](Primitive *p1, Primitive *p2) {
+        return p1->get_bbox().centroid()[largestAxis] < p2->get_bbox().centroid()[largestAxis];
+    });
+
+    auto mid_it = start + (end - start) / 2;
+    node->l = construct_bvh(start, mid_it, max_leaf_size);
+    node->r = construct_bvh(mid_it, end, max_leaf_size);
+  }
+
+  return node;
+}
+```
+
+## Partner Reflection
 
 We regularly met up to work on the tasks synchronously (pair programming). We
 found that it often felt like one person was doing all the work while the other
