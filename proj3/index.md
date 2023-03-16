@@ -85,6 +85,12 @@ If the BVH node we created contains fewer than `max_leaf_size` primitives, it wi
 
 Otherwise, we must split the BVH node further. In order to do so, we use the `extent` variable and find the longest axis of the bounding box. Then, we sort the primitives from `start` to `end`, ordered by their centroid's position along this axis. This sorting is in-place and we never need to create more vectors to hold primitives. We then take the median centroid `mid` to split on using pointer arithmetic and recursively construct the left and right BVH nodes with all the primitives from `start` to `mid` and `mid` to `end`, respectively. Because we're using the median in this manner, there will always be non-empty collections of primitives on each side of the split.
 
+Here are some images showing the results of our BVH.
+
+| ![bvh-1](./img/part-2/bvh-1.png) | ![bvh-2](./img/part-2/bvh-2.png) |
+|:---:|:---:|
+| ![bvh-3](./img/part-2/bvh-3.png) | ![bvh-4](./img/part-2/bvh-4.png) |
+
 <!-- Show images with normal shading for a few large .dae files that you can only render with BVH acceleration. -->
 
 <!-- Example of including multiple figures -->
