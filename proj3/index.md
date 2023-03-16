@@ -75,7 +75,7 @@ Additionally, upon intersection, we need to update some of the variables in `ise
 
 ## Part 2: Bounding Volume Hierarchy (20 Points)
 
-### Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
+<!-- Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point. -->
 
 Our BVH construction algorithm recursively creates the BVH nodes by splitting at the median centroid along the longest axis and terminating when there are fewer than `max_leaf_size` primitives left.
 
@@ -117,13 +117,15 @@ Comparing rendering times with and without BVH acceleration, our BVH acceleratio
 
 ## Part 3: Direct Illumination (20 Points)
 
-### Walk through both implementations of the direct lighting function.
+<!-- Walk through both implementations of the direct lighting function. -->
 
 For hemisphere sampling, we first sample for $w_i$, convert it to the world space, and create a ray. This ray is then used to intersect with the object's BVH. Once we get the intersection point, we can compute the term for the Monte Carlo estimation: $\frac{f_{BSDF}(w_{out} \rightarrow w_{in})L_i(p, w_{in})\cos(\theta_{in})}{p(w_in)}$. After averaging over the samples, we get the Monte Carlo estimation.
 
 For lighting importance sampling, we instead loop through the scene's lights and sample some number of rays in the direction of each light: 1 for point lights and `ns_area_light` for area lights. For each light, we use `sample_L` to sample the in direction (because we're tracing rays in the inverse direction), also getting the distance to the light and PDF as well. Then, similar to hemisphere sampling, we compute the term for Monte Carlo estimation. And, after averaging, we get the overall estimation for the full integral.
 
-### Show some images rendered with both implementations of the direct lighting function.
+<!-- Show some images rendered with both implementations of the direct lighting function. -->
+
+These images below compare the two direct lighting sampling methods.
 
 | Scene | Uniform Hemisphere Sampling | Importance Sampling |
 |:---:|:---:|:---:|
@@ -133,7 +135,9 @@ For lighting importance sampling, we instead loop through the scene's lights and
 
 The above renders used a sample rate of 4 per pixel and 16 samples per light.
 
-### Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.
+<!-- Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling. -->
+
+The number of light rays also affects the output image. For example, here is the bunny scene for 1, 4, 16, and 64 rays.
 
 | Number of Light Rays | `CBbunny.dae` |
 |:---:|:---:|
@@ -144,18 +148,20 @@ The above renders used a sample rate of 4 per pixel and 16 samples per light.
 
 When sampling with more light rays, the shadow of the bunny becomes significantly softer, even with just one sample per pixel. This is because we are using importance sampling, so having more samples per light source has a smoothing effect for pixels that are on the edges of shadows, due to the fact that sometimes they will hit a point on the light and other times be obstructed. When we have more light rays, we can average this effect, so the shadows will become softer.
 
-### Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.
+<!-- Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis. -->
 
-Uniform hemisphere sampling tended to be noisier than lighting sampling because a lot of the rays sampled in the uniform approach don't end up hitting the single light. As a result, fewer of the samples actually give useful information. On the other hand, lighting sampling specifically samples rays directed towards the light, so each sample gives a larger signal. Another difference between the two sampling methods is that lighting sampling probably converges faster. Each sample on average provides more useful information because it specifically targets in the light's direction, rather than a random direction that might not hit the light.
+Overall, uniform hemisphere sampling tended to be noisier than lighting sampling because a lot of the rays sampled in the uniform approach don't end up hitting the single light. As a result, fewer of the samples actually give useful information. On the other hand, lighting sampling specifically samples rays directed towards the light, so each sample gives a larger signal. Another difference between the two sampling methods is that lighting sampling probably converges faster. Each sample on average provides more useful information because it specifically targets in the light's direction, rather than a random direction that might not hit the light.
 
 
 ## Part 4: Global Illumination (20 Points)
 
-### Walk through your implementation of the indirect lighting function.
+<!-- Walk through your implementation of the indirect lighting function. -->
 
 For indirect lighting, we initialize rays with a depth equal to the maximum ray depth, and decrement for each bounce, recursing until we get to depth 0.
 
-### Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
+<!-- Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel. -->
+
+Here are some of our images rendered with global illumination.
 
 | Scene | Render |
 |:---:|:---:|
@@ -164,7 +170,9 @@ For indirect lighting, we initialize rays with a depth equal to the maximum ray 
 | `dragon.dae` | ![dragon](./img/part-4/dragon-1024-16.png) |
 | `wall-e.dae` | ![wall-e](./img/part-4/wall-e-1024-16.png) |
 
-### Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
+<!-- ### Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.) -->
+
+To isolate the effects of direct and indirect illumination, we've compared the spheres scene with just direct and just indirect illumination.
 
 | Only direct illumination | Only indirect illumination |
 |:-------------:|:---:|
@@ -172,8 +180,9 @@ For indirect lighting, we initialize rays with a depth equal to the maximum ray 
 
 In direct illumination, we include both the zero bounce and no bounce radiance. For example, we see all of the light coming directly from the light source at the ceiling. We also see all the one bounce radiance either off the ball's top half or from the walls/floor of the box. Indirect illumination includes all the light from more than one bounces. On the left and right sides of the balls, we see rays that came from the light, reflected off of a wall, reflected off the ball, and then through the camera. We also see light that bounces off of a ball, off the walls, and then to the camera. In general, rays that bounces multiple times before reaching the camera (or light if you're tracing in the opposite direction) are included in this indirect illumination.
 
+<!-- For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel. -->
 
-### For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
+The `max_ray_depth` also affects the rendering. Here is the same image where the max ray depth is set to 0, 1, 2, 3, and 100.
 
 | `max_ray_depth` | `CBbunny.dae` render |
 |:-------------:|:---:|
@@ -183,10 +192,11 @@ In direct illumination, we include both the zero bounce and no bounce radiance. 
 | 3 | ![Bunny-3](./img/part-4/bunny-3.png)  |
 | 100 | ![Bunny-100](./img/part-4/bunny-100.png)  |
 
-
 We generated each of these renders using Russian roulette with a termination probability of 0.3. As `max_ray_depth` increases, indirect lighting from reflections and bounces have more paths available to every single point. This means that the image will generally be brighter because there are more light "sources," (the reflections off non-light-source points) and we also will gain reflected colors (most easily seen in the slightly reddish-bluish ceiling of the 100-depth render). Also, the shadows become softer and are also tinted the color of the walls.
 
-### Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
+<!-- Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays. -->
+
+Below, we also see how the sample rate affects the rendered image.
 
 | Sample Rate | `CBspheres.dae` render |
 |:-------------:|:---:|
@@ -208,7 +218,7 @@ For the above renders, we used 16 samples per area light, with a maximum ray dep
 <!-- Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
 Pick one scene and render it with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth. -->
 
-### Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
+<!-- ### Explain adaptive sampling. Walk through your implementation of the adaptive sampling. -->
 
 Adaptive sampling is where we sample high-frequency regions of the image more because lower-frequency regions do not require as many samples to become relatively noise-free. This is done by comparing the standard deviation of the samples for a pixel to a threshold value. If the threshold condition is met, more samples will likely not change the pixel's final value very much, so we can terminate computation early. If the threshold condition is not met, then we sample that pixel more to reduce the variance. We can also set a maximum number of samples per region to prevent pixels from being sampled too many times.
 
@@ -228,7 +238,7 @@ If the statistics satisfy this condition, then no more sampling is done for that
 
 This process speeds up the sampling process significantly while maintaining most of the quality, as shown in the following renders:
 
-### Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.
+<!-- Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth. -->
 
 We used a maximum tolerance of 0.05 for adaptive sampling, with 64 samples per batch, a sample rate of 2048, 1 sample per light, and a maximum ray depth of 5.
 
