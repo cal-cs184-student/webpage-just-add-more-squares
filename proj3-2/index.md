@@ -7,6 +7,12 @@ mathjax: true
 ---
 # Overview
 
+For this project, we implemented additional features on top of Project 3-1. We added support for different types of materials, including mirror and glass objects, allowing to render interesting scenes with many reflections and refractions. We also added support for microfacet materials and textures, allowing us to render more realistic materials.
+
+Both of these tasks were fairly straightforward and involved translating the formulas and pseudocode from the spec into C++. Most of the challenges encountered were the result of mistranslation or small typos, and a re-read of the spec or code usually solved the problem. For task 2, there were some tricky parts, such as reflecting over a given line in 3D space, but Ed was a good resource here, with many other students already encountering the same problems and helpfully offering solutions.
+
+Overall, we found this project very rewarding as we were able to render neat objects for visual gratification and it wasn't too difficult.
+
 # Part 1: Mirror and Glass Materials
 
 In this part of the project, we implemented models for different types of reflection and refraction. This involved modifying the `advanced_bsdf.cpp` file to create new types of BSDFs. We started with a mirror BSDF, where we implemented perfect specular reflection where the incident angle is equal to the outgoing angle. We then created a refraction BSDF that modified the outgoing angle based on the ratio between indices of refraction. Finally, we implemented a BSDF for glass materials that combined reflections and refractions probabilistically. 
