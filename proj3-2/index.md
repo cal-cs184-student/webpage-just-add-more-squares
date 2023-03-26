@@ -9,7 +9,7 @@ mathjax: true
 
 # Part 1: Mirror and Glass Materials
 
-In this part of the project, we implemented models for different types of reflection and refraction. This involved modifying the `advanced_bsdf.cpp` file to create new types of BSDFs. We started with a mirror BSDF, we implemented perfect specular reflection where the incident angle is equal to the outgoing angle. We then created a refraction BSDF that modified the outgoing angle based on the ratio between indices of refraction. Finally, we implemented a BSDF for glass materials that combined reflections and refractions probabilistically. 
+In this part of the project, we implemented models for different types of reflection and refraction. This involved modifying the `advanced_bsdf.cpp` file to create new types of BSDFs. We started with a mirror BSDF, where we implemented perfect specular reflection where the incident angle is equal to the outgoing angle. We then created a refraction BSDF that modified the outgoing angle based on the ratio between indices of refraction. Finally, we implemented a BSDF for glass materials that combined reflections and refractions probabilistically. 
 
 For `max_ray_depth` values of 0, 1, 2, 3, 4, 5, and 100, we generated these images. These images used a sample rate of 1024 and 16 samples per light.
 
