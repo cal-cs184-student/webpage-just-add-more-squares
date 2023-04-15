@@ -7,6 +7,24 @@ mathjax: true
 ---
 ## Overview
 
+In this project, we represented a cloth using a mass-spring system.
+
+We began by placing point masses at evenly spaced intervals and connecting them
+with springs to represent structural, shearing, and bending constraints. Then we
+added physics simulation logic using Verlet integration, a fairly simple
+explicit integrator, simulating the forces on each mass from the springs and
+limiting their displacement at each timestep so as to prevent our cloth moving
+too quickly and becoming unrealistic. We also implemented collision handling
+with other objects using similar logic to raytracing, where we find the
+intersection points between primitives, and use that to determine if a collision
+has occurred.
+
+From here, we implemented self-collisions by using spatial hashing to determine
+if close points were colliding with one another, because naively checking pairs
+of point masses to see if they had collided was too slow. Finally, we added
+shaders to the cloth to make it look more realistic, and emulated a wind force
+to make the cloth move more naturally.
+
 ## Part 1: Masses and Springs
 <!-- Take some screenshots of scene/pinned2.json from a viewing angle where you can clearly see the cloth wireframe to show the structure of your point masses and springs.  -->
 
@@ -28,8 +46,31 @@ The cloth wireframe we created has this structure:
 - For each of the above, observe any noticeable differences in the cloth compared to the default parameters and show us some screenshots of those interesting differences and describe when they occur.
 -->
 
+We ran the experiments with densities of 1.5 g/cm^2, 15 g/cm^2, and 150 g/cm^2, spring constants of 100 N/m, 5000 N/m, and 50000 N/m, and damping constants of 0.0, 0.2, and 0.85, leaving the other variables as their defaults.
+
+As the spring constant increases, the cloth becomes more stiff (and vice versa with the spring constant decreasing). We see less of a rippling effect. This can be seen with the discrepancy between the two screenshots below:
+
+| 100 N/m | 50000 N/m |
+|:---:|:---:|
+| ![100](./img/part-2/ks100.png) | ![50000](./img/part-2/ks50000.png) |
+
+For the density, the cloth becomes more liquid-like as the density decreases, meaning that there is more of a ripple effect as the density increases. This was the opposite of what we expected!
+
+| 1.5 g/cm^2 | 150 g/cm^2 |
+|:---:|:---:|
+| ![1.5](./img/part-2/density1.5.png) | ![150](./img/part-2/density150.png) |
+
+Finally, damping affects how bouncy the cloth is, with the extreme at 0 causing the cloth to never cease movement. We see much more rippling in the 0-damped cloth. In fact, with a damping coefficient of 0.85, the cloth did not bounce at all!
+
+| 0.0 | 0.85 |
+|:---:|:---:|
+| ![0.0](./img/part-2/damping0.png) | ![0.85](./img/part-2/damping85.png) |
+
 <!-- Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state! If you choose to use different parameters than the default ones, please list them. -->
 
+Here is a screenshot of our cloth in its final resting state using the default parameters.
+
+![pinned4](./img/part-2/pinned4-rest.png)
 
 
 ## Part 3: Handling Collisions with Other Objects
@@ -129,3 +170,44 @@ Here's a GIF of the simulation:
 
 ## Extra Credit
 <!-- If you implemented any additional technical features for the cloth simulation, clearly describe what you did and provide screenshots that illustrate your work. If it is an improvement compared to something already existing on the cloth simulation, compare and contrast them both in words and in images. -->
+
+For extra credit, we implemented wind. We did this by adding a wind force to the cloth dependent on the point mass's position in `simulate`. Our vector function for the wind force is as follows, inspired by ChatGPT's recommendation for a tornado. We tweaked it to correspond to the center of the cloth at any given timestep which does not quite simulate real wind (but does emulate a moving tornado!), but we get nice results nonetheless. Though it is not quite like a tornado, we find that there is a nice wind effect.
+
+```cpp
+Vector3D Cloth::computeWindForce(const PointMass& pm, const Vector3D& center) {
+    double a = .2;
+    double b = .2;
+    double c = .2;
+
+    double EPS = 1e-6;
+
+    double x = pm.position.x;
+    double y = pm.position.y;
+    double z = pm.position.z;
+
+    double r = sqrt(x * x + y * y + z * z);
+    double r_xy = sqrt(x * x + y * y);
+
+    return {(a + b * cos(r_xy) * cos(r / c)) / (r_xy + EPS) * x,
+            (a + b * cos(r_xy) * cos(r / c)) / (r_xy + EPS) * y,
+            c * z / (r + EPS)};
+}
+```
+
+`EPS` is necessary to avoid division by zero. 
+
+Here are some screenshots of the wind effect, run on `pinned2.json` with the default values. This is with damping off because the wind force would quickly become negligible.
+
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| ![wind-0](./img/part-6/pinned2/0.png){:style="width:70px; height:70px"} | ![wind-1](./img/part-6/pinned2/1.png){:style="width:70px; height:70px"} | ![wind-2](./img/part-6/pinned2/2.png){:style="width:70px; height:70px"} | ![wind-3](./img/part-6/pinned2/3.png){:style="width:70px; height:70px"} | ![wind-4](./img/part-6/pinned2/4.png){:style="width:70px; height:70px"} | ![wind-5](./img/part-6/pinned2/5.png){:style="width:70px; height:70px"} | ![wind-6](./img/part-6/pinned2/6.png){:style="width:70px; height:70px"} | ![wind-7](./img/part-6/pinned2/7.png){:style="width:70px; height:70px"} |
+| ![wind-8](./img/part-6/pinned2/8.png){:style="width:70px; height:70px"} | ![wind-9](./img/part-6/pinned2/9.png){:style="width:70px; height:70px"} | ![wind-10](./img/part-6/pinned2/10.png){:style="width:70px; height:70px"} | ![wind-11](./img/part-6/pinned2/11.png){:style="width:70px; height:70px"} | ![wind-12](./img/part-6/pinned2/12.png){:style="width:70px; height:70px"} | ![wind-13](./img/part-6/pinned2/13.png){:style="width:70px; height:70px"} | ![wind-14](./img/part-6/pinned2/14.png){:style="width:70px; height:70px"} | ![wind-15](./img/part-6/pinned2/15.png){:style="width:70px; height:70px"} |
+
+Here's a GIF of the simulation:
+
+![wind-gif](./img/part-6/pinned2/wind.gif){:style="display:block; margin-left: auto; margin-right: auto; width:50%;"}
+
+Because the wind is simply an added force in `simulate`, it does not change the collision logic at all. Here is an example with `sphere.json`:
+
+![wind-sphere](./img/part-6/sphere/wind-sphere.gif){:style="display:block; margin-left: auto; margin-right: auto; width:50%;"}
+
+
